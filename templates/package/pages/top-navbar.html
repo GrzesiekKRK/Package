@@ -1,0 +1,201 @@
+<!-- Top Navbar -->
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl"
+     id="navbarBlur"
+     data-scroll="true"
+     role="navigation"
+     aria-label="Top navigation">
+  <div class="container-fluid py-1 px-3">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm">
+          <a class="opacity-5 text-dark" href="{% url 'home' %}">
+            {% block breadcrumb_parent %}Pages{% endblock %}
+          </a>
+        </li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">
+          {% block breadcrumb_current %}Dashboard{% endblock %}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+      <!-- Search -->
+      <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+        {% block search_bar %}
+        <form method="GET" action="{% url 'search' %}" class="input-group input-group-outline" role="search">
+          <label class="form-label">{% block search_placeholder %}Type here...{% endblock %}</label>
+          <input type="text"
+                 name="q"
+                 class="form-control"
+                 value="{{ request.GET.q|default:'' }}"
+                 aria-label="Search">
+        </form>
+        {% endblock %}
+      </div>
+
+      <!-- Right Navigation Items -->
+      <ul class="navbar-nav d-flex align-items-center justify-content-end">
+        {% block navbar_items %}
+        <!-- Online Builder Button -->
+        <li class="nav-item d-flex align-items-center">
+          <a class="btn btn-outline-primary btn-sm mb-0 me-3"
+             target="_blank"
+             rel="noopener noreferrer"
+             href="https://www.creative-tim.com/builder"
+             aria-label="Online Builder (opens in new tab)">
+            Online Builder
+          </a>
+        </li>
+
+        <!-- GitHub Star Button -->
+        <li class="mt-1">
+          <iframe src="https://ghbtns.com/github-btn.html?user=creativetimofficial&repo=material-dashboard&type=star&count=true&size=large"
+                  frameborder="0"
+                  scrolling="0"
+                  width="170"
+                  height="30"
+                  title="GitHub Star Button"
+                  loading="lazy"></iframe>
+        </li>
+        {% endblock %}
+
+        <!-- Mobile Menu Toggle -->
+        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+          <button class="nav-link text-body p-0 border-0 bg-transparent"
+                  id="iconNavbarSidenav"
+                  aria-label="Toggle sidebar navigation">
+            <div class="sidenav-toggler-inner">
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+            </div>
+          </button>
+        </li>
+
+        <!-- Settings -->
+        <li class="nav-item px-3 d-flex align-items-center">
+          <button class="nav-link text-body p-0 border-0 bg-transparent fixed-plugin-button-nav"
+                  aria-label="Open settings">
+            <i class="material-symbols-rounded" aria-hidden="true">settings</i>
+          </button>
+        </li>
+
+        <!-- Notifications Dropdown -->
+        <li class="nav-item dropdown pe-3 d-flex align-items-center">
+          <button class="nav-link text-body p-0 border-0 bg-transparent"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  aria-label="Open notifications">
+            <i class="material-symbols-rounded" aria-hidden="true">notifications</i>
+            {% if notifications_count %}
+              <span class="badge badge-sm bg-gradient-danger position-absolute top-0 start-100 translate-middle">
+                {{ notifications_count }}
+              </span>
+            {% endif %}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+            {% block notifications %}
+            {% if notifications %}
+              {% for notification in notifications %}
+                <li class="mb-2">
+                  <a class="dropdown-item border-radius-md" href="{{ notification.url|default:'#' }}">
+                    <div class="d-flex py-1">
+                      <div class="my-auto">
+                        {% if notification.avatar %}
+                          <img src="{{ notification.avatar.url }}"
+                               class="avatar avatar-sm me-3"
+                               alt="{{ notification.sender|default:'User' }} avatar">
+                        {% else %}
+                          <div class="avatar avatar-sm bg-gradient-secondary me-3 d-flex align-items-center justify-content-center">
+                            <i class="material-symbols-rounded text-white">person</i>
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-sm font-weight-normal mb-1">
+                          {{ notification.title|truncatechars:50 }}
+                        </h6>
+                        <p class="text-xs text-secondary mb-0">
+                          <i class="fa fa-clock me-1" aria-hidden="true"></i>
+                          {{ notification.created_at|timesince }} ago
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              {% endfor %}
+              {% if notifications|length > 3 %}
+                <li class="text-center">
+                  <a class="dropdown-item" href="{% url 'notifications' %}">
+                    View all notifications
+                  </a>
+                </li>
+              {% endif %}
+            {% else %}
+              <li class="text-center py-3">
+                <p class="text-sm text-muted mb-0">No new notifications</p>
+              </li>
+            {% endif %}
+            {% endblock %}
+          </ul>
+        </li>
+
+        <!-- User Account -->
+        <li class="nav-item d-flex align-items-center">
+          {% if user.is_authenticated %}
+            <div class="nav-item dropdown">
+              <button class="nav-link text-body font-weight-bold px-0 border-0 bg-transparent"
+                      id="userDropdown"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      aria-label="User menu">
+                {% if user.profile.avatar %}
+                  <img src="{{ user.profile.avatar.url }}"
+                       class="avatar avatar-sm"
+                       alt="{{ user.get_full_name|default:user.username }} avatar">
+                {% else %}
+                  <i class="material-symbols-rounded" aria-hidden="true">account_circle</i>
+                {% endif %}
+                <span class="d-none d-sm-inline ms-1">{{ user.get_full_name|default:user.username }}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                  <a class="dropdown-item" href="{% url 'profile' %}">
+                    <i class="material-symbols-rounded me-2" aria-hidden="true">person</i>
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'settings' %}">
+                    <i class="material-symbols-rounded me-2" aria-hidden="true">settings</i>
+                    Settings
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">
+                      <i class="material-symbols-rounded me-2" aria-hidden="true">logout</i>
+                      Sign Out
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          {% else %}
+            <a href="{% url 'signin' %}"
+               class="nav-link text-body font-weight-bold px-0"
+               aria-label="Sign in to your account">
+              <i class="material-symbols-rounded" aria-hidden="true">account_circle</i>
+              <span class="d-none d-sm-inline ms-1">Sign In</span>
+            </a>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End Top Navbar -->

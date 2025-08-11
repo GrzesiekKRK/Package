@@ -4,10 +4,25 @@ from django.urls import path
 from users.views import DashboardView, UserLoginView, UserSignUpView
 
 urlpatterns = [
-    path("", DashboardView.as_view(), name="user-home"),
+    path("", DashboardView.as_view(), name="dashboard"),
     path("login/", UserLoginView.as_view(), name="user-login"),
     path("logout/", LogoutView.as_view(next_page="user-login"), name="user-logout"),
-    path("register/", UserSignUpView.as_view(), name="user-register"),
+    path("register/", UserSignUpView.as_view(), name="user-sign-up"),
+    path("tables/", DashboardView.as_view(), name="tables"),
+    path("tables/", DashboardView.as_view(), name="billing"),
+    path("tables/", DashboardView.as_view(), name='virtual-reality'),
+    path("tables/", DashboardView.as_view(), name="rtl"),
+    path("tables/", DashboardView.as_view(), name='notifications'),
+    path("tables/", DashboardView.as_view(), name='profile'),
+    path("tables/", DashboardView.as_view(), name='signin'),
+    path("tables/", DashboardView.as_view(), name='home'),
+    path("tables/", DashboardView.as_view(), name='search'),
+    path("tables/", DashboardView.as_view(), name='pricing'),
+    path("tables/", DashboardView.as_view(), name='components'),
+    path("tables/", DashboardView.as_view(), name='blocks'),
+    path("tables/", DashboardView.as_view(), name='docs'),
+    path("tables/", DashboardView.as_view(), name='demo'),
+    path("tables/", DashboardView.as_view(), name='blocks'),
     # path("profile/", UserUpdateView.as_view(), name="user-profile"),
     # path("<int:pk>/delete/", UserDeleteView.as_view(), name="user-delete"),
 ]
