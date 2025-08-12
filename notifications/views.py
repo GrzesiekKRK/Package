@@ -196,7 +196,7 @@ class OrderNotification:
         return literal
 
     @staticmethod
-    def vendor_notification(order: Order) -> Notification:
+    def company_notification(order: Order) -> Notification:
         """
         Creates and sends a notification to the vendor when their products are sold.
 
@@ -208,20 +208,21 @@ class OrderNotification:
         """
         title = f"The purchase of your products has been paid for in orders {order.id}"
 
-        products_order = ProductOrder.objects.filter(order=order.id)
+        # products_order = ProductOrder.objects.filter(order=order.id)
         dict_prod = {"products": {}}
-        for product_order in products_order:
-            inventory = Inventory.objects.get(products=product_order.product.id)
-            if inventory:
-                dict_prod["vendor"] = (
-                    inventory.vendor.first_name + " " + inventory.vendor.last_name
-                )
-                dict_prod["products"].update(
-                    {product_order.product.name: str(product_order.quantity)}
-                )
-        sold_products = OrderNotification.unpacking_products(dict_prod)
-        body = f"Hi {dict_prod['vendor']} \n\n Sold products:{sold_products}"
+        # for product_order in products_order:
+        #     inventory = Inventory.objects.get(products=product_order.product.id)
+        #     if inventory:
+        #         dict_prod["vendor"] = (
+        #             inventory.vendor.first_name + " " + inventory.vendor.last_name
+        #         )
+        #         dict_prod["products"].update(
+        #             {product_order.product.name: str(product_order.quantity)}
+        #         )
+        # sold_products = OrderNotification.unpacking_products(dict_prod)
+        # body = f"Hi {dict_prod['vendor']} \n\n Sold products:{sold_products}"
 
-        notification = Notification(user=inventory.vendor, title=title, body=body)
-        notification.save()
-        return notification
+        # notification = Notification(user=inventory.vendor, title=title, body=body)
+        # notification.save()
+        # return notification
+        pass

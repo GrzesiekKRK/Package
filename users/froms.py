@@ -65,6 +65,12 @@ class UpdateUserForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
+    postal_code = forms.CharField(
+        max_length=10,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
     class Meta:
         model = CustomUser
         fields = (
@@ -76,3 +82,4 @@ class UpdateUserForm(forms.ModelForm):
             "billing_address",
             "postal_code",
         )
+

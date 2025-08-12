@@ -1,3 +1,150 @@
+<!-- Sidebar Navigation -->
+{%  load static %}
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2 bg-white my-2"
+       id="sidenav-main"
+       role="navigation"
+       aria-label="Main navigation">
+  <div class="sidenav-header">
+    <button class="fas fa-times p-3 cursor-pointer text-dark opacity-5 position-absolute end-0 top-0 d-none d-xl-none border-0 bg-transparent"
+            aria-label="Close sidebar"
+            id="iconSidenav">
+    </button>
+
+    <a class="navbar-brand px-4 py-3 m-0"
+       href="{% block brand_url %}{% url 'dashboard' %}{% endblock %}"
+       aria-label="{% block brand_name %}Creative Tim{% endblock %} - Go to dashboard">
+      <img src="{% static 'img/logo-ct-dark.png' %}"
+           class="navbar-brand-img"
+           width="26"
+           height="26" />
+      <span class="ms-1 text-sm text-dark">Creative Tim</span>
+    </a>
+  </div>
+
+  <hr class="horizontal dark mt-0 mb-2">
+
+  <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+    <ul class="navbar-nav" role="menubar">
+      {% block sidebar_menu %}
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'dashboard' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'dashboard' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">dashboard</i>
+          <span class="nav-link-text ms-1">Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'tables' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'tables' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'tables' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">table_view</i>
+          <span class="nav-link-text ms-1">Tables</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'billing' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'billing' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'billing' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">receipt_long</i>
+          <span class="nav-link-text ms-1">Billing</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'virtual-reality' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'virtual-reality' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'virtual-reality' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">view_in_ar</i>
+          <span class="nav-link-text ms-1">Virtual Reality</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'rtl' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'rtl' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'rtl' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">format_textdirection_r_to_l</i>
+          <span class="nav-link-text ms-1">RTL</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'notifications' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'notifications' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">notifications</i>
+          <span class="nav-link-text ms-1">Notifications</span>
+        </a>
+      </li>
+
+      <li class="nav-item mt-3" role="none">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == 'profile' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url 'profile' %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == 'profile' %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">person</i>
+          <span class="nav-link-text ms-1">Profile</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == "user-login" %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url "user-login" %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == "user-login" %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">login</i>
+          <span class="nav-link-text ms-1">Sign In</span>
+        </a>
+      </li>
+
+      <li class="nav-item" role="none">
+        <a class="nav-link {% if request.resolver_match.url_name == "user-sign-up" %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}"
+           href="{% url "user-sign-up" %}"
+           role="menuitem"
+           aria-current="{% if request.resolver_match.url_name == "user-sign-up" %}page{% endif %}">
+          <i class="material-symbols-rounded opacity-5" aria-hidden="true">assignment</i>
+          <span class="nav-link-text ms-1">Sign Up</span>
+        </a>
+      </li>
+      {% endblock sidebar_menu %}
+    </ul>
+  </div>
+
+  <div class="sidenav-footer position-absolute w-100 bottom-0">
+    <div class="mx-3">
+      {% block sidebar_footer %}
+      <a class="btn btn-outline-dark mt-4 w-100"
+         href="https://www.creative-tim.com/learning-lab/bootstrap/overview/material-dashboard"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="View documentation (opens in new tab)">
+        Documentation
+      </a>
+      <a class="btn bg-gradient-dark w-100"
+         href="https://www.creative-tim.com/product/material-dashboard-pro"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Upgrade to pro version (opens in new tab)">
+        Upgrade to pro
+      </a>
+      {% endblock sidebar_footer %}
+    </div>
+  </div>
+</aside>
+
 <!-- Top Navbar -->
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl"
      id="navbarBlur"
@@ -198,4 +345,3 @@
     </div>
   </div>
 </nav>
-<!-- End Top Navbar -->

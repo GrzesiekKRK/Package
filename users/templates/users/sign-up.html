@@ -1,9 +1,9 @@
-{% extends 'package/pages/base.html' %}
+
 {% load crispy_forms_tags %}
 {% block content %}
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Register</h1>
+        <h1 class="text-center text-white display-6">Sign up</h1>
     </div>
     <!-- Single Page Header End -->
 
@@ -13,7 +13,6 @@
                 <form method="POST">
                     {% csrf_token %}
                     <fieldset class="form-group">
-                        <legend class="visually-hidden">Registration Form</legend>
                         {{ form|crispy }}
                     </fieldset>
                     <div class="form-group">
@@ -22,7 +21,7 @@
                 </form>
                 <div class="border-top pt-3 text-center">
                     <small class="text-muted">
-                        Have an account? <a class="ml-2" href="{% url 'user-login' %}">Sign in</a>
+                        Have an account? <a class="ml-2" href="{% url "user-sign-in" %}">Sign in</a>
                     </small>
                 </div>
             </div>
