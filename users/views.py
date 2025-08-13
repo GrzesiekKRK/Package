@@ -34,7 +34,7 @@ class UserSignInView(LoginView):
     """
         Handles user login functionality. If login fails, an error message is shown.
     """
-    template_name = 'users/login.html'
+    template_name = 'users/sign-in.html'
     redirect_authenticated_user = True
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -63,7 +63,7 @@ class UserSignInView(LoginView):
                 login(request, user)
                 return redirect("dashboard")
 
-        return render(request, "users/login.html", {"form": form})
+        return render(request, "users/sign-in.html", {"form": form})
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
@@ -138,3 +138,16 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = "users/profile.html"
+
+    def get_object(self, queryset: Optional[QuerySet[CustomUser]] = None) -> CustomUser:
+        """
+        Retrieves the current user's profile to be updated.
+
+        Args:
+            queryset (Optional[QuerySet[CustomUser]]): The queryset used for filtering users.
+
+        Returns:
+            CustomUser: The current user's profile.
+        """
+        user = CustomUser.objects.get(id=self.request.user.id)
+        return user

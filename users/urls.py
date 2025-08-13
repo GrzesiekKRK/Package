@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from users.views import DashboardView, UserSignInView, UserSignUpView, UserUpdateView
+from users.views import DashboardView, UserSignInView, UserSignUpView, UserUpdateView, UserProfileView
 
 urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
@@ -9,13 +9,12 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(next_page="user-login"), name="user-logout"),
     path("sign-up/", UserSignUpView.as_view(), name="user-sign-up"),
     path("update/", UserUpdateView.as_view(), name="user-update"),
-    # path("profile/", UserProfileview.as_view(), name="user-profile"),
+    path("profile/", UserProfileView.as_view(), name="user-profile"),
     path("tables/", DashboardView.as_view(), name="tables"),
     path("tables/", DashboardView.as_view(), name="billing"),
     path("tables/", DashboardView.as_view(), name='virtual-reality'),
     path("tables/", DashboardView.as_view(), name="rtl"),
     path("tables/", DashboardView.as_view(), name='notifications'),
-    path("tables/", DashboardView.as_view(), name='profile'),
     path("tables/", DashboardView.as_view(), name='signin'),
     path("tables/", DashboardView.as_view(), name='home'),
     path("tables/", DashboardView.as_view(), name='search'),
