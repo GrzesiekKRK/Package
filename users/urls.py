@@ -5,7 +5,7 @@ from users.views import DashboardView, UserSignInView, UserSignUpView, UserUpdat
 
 urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
-    path("sing-in/", UserSignInView.as_view(), name="user-sign-in"),
+    path("login/", UserSignInView.as_view(), name="user-sign-in"),
     path("logout/", LogoutView.as_view(next_page="user-sign-in"), name="user-logout"),
     path("sign-up/", UserSignUpView.as_view(), name="user-sign-up"),
     path("update/", UserUpdateView.as_view(), name="user-update-profile"),

@@ -153,7 +153,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         return user
 
 
-class UserDeleteView(DeleteView, LoginRequiredMixin):
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     """
     Handles user deletion. The user can delete their account, after which they are redirected
     to the login page.
@@ -161,4 +161,4 @@ class UserDeleteView(DeleteView, LoginRequiredMixin):
 
     model = CustomUser
     template_name = "users/delete.html"
-    success_url = reverse_lazy("user-login")
+    success_url = reverse_lazy("user-sign-in")
