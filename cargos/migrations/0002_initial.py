@@ -10,18 +10,24 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("notifications", "0001_initial"),
+        ("cargos", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="notification",
+            model_name="cargotransportstatus",
             name="user",
             field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
+        ),
+        migrations.AddField(
+            model_name="cargotransport",
+            name="cargo_status",
+            field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name="notifications",
-                to=settings.AUTH_USER_MODEL,
+                to="cargos.cargotransportstatus",
             ),
         ),
     ]

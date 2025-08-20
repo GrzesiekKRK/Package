@@ -1,5 +1,6 @@
 from django.db import models
 from cargos import consts as status
+from users.models import CustomUser
 
 
 class CargoTransportStatus(models.Model):
@@ -10,9 +11,10 @@ class CargoTransportStatus(models.Model):
                         (status.STATUS_COMPLETED, "Completed"),
                         (status.STATUS_REJECTED, "Rejected")
                     ]
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES)
+    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=status.STATUS_PENDING_ACCEPTANCE)
 
     def __str__(self) -> str:
         return f"Transport demand created at: {self.created_at},last update {self.updated_at}, Status: {self.status}"

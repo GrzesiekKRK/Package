@@ -12,7 +12,7 @@ from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from users.models import CustomUser
-from users.froms import RegisterUserForm, UpdateUserForm, LoginForm
+from users.forms import RegisterUserForm, UpdateUserForm, LoginForm
 
 
 class DashboardView(TemplateView):
