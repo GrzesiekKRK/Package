@@ -16,7 +16,6 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label for="formFile" class="form-label"></label>
-                {{ user_form|crispy}}
                 {{ cargo_form|crispy }}
                 {{ cargo_dimension_form|crispy }}
             </div>

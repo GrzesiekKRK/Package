@@ -26,21 +26,23 @@ class CargoTransport(models.Model):
         Working in conjunction with OrderDimension for better performance
     """
     cargo_status = models.ForeignKey(CargoTransportStatus, on_delete=models.CASCADE)
-    total_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Distance")
-    total_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Duration")
-    transport_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Distance")
-    transport_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Duration")
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Distance", default=1)
+    total_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Duration", default=1)
+    transport_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Distance", default=1)
+    transport_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Duration", default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=1)
     collection_date = models.DateTimeField(auto_now_add=True, verbose_name="Collection Date")
     collection_address = models.CharField(
         max_length=100,
         verbose_name="Collection Address",
         help_text="Collection address",
+        default="AZM"
     )
     delivery_address = models.CharField(
         max_length=100,
         verbose_name="Delivery Address",
         help_text="Delivery address",
+        default="AZM"
     )
 
     def __str__(self) -> str:
@@ -62,10 +64,10 @@ class CargoDimension(models.Model):
      With its help will decide what type of vehicle will do CargoTransport.
     """
     cargo = models.OneToOneField(CargoTransport, on_delete=models.CASCADE, verbose_name="Cargo", related_name='dimensions')
-    length = models.FloatField(help_text='length of the cargo bed in centimeters', verbose_name="Length")
-    width = models.FloatField(help_text='width  of the cargo bed in centimeters',  verbose_name="Width")
-    height = models.FloatField(help_text='height of the cargo bed in centimeters', verbose_name="Height")
-    weight = models.FloatField(help_text='Gross Vehicle Weight in Kilograms', verbose_name="Weight")
+    length = models.FloatField(help_text='length of the cargo bed in centimeters', verbose_name="Length", default=1)
+    width = models.FloatField(help_text='width  of the cargo bed in centimeters',  verbose_name="Width", default=1)
+    height = models.FloatField(help_text='height of the cargo bed in centimeters', verbose_name="Height", default=1)
+    weight = models.FloatField(help_text='Gross Vehicle Weight in Kilograms', verbose_name="Weight", default=1)
 
     def __str__(self):
         return f"Cargo {self.cargo.id} : Weight:{self.weight}, Length:{self.length}, Width:{self.width}, Height:{self.height}"
