@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from users.views import DashboardView, UserSignInView, UserSignUpView, UserUpdateView, UserProfileView, UserDeleteView, EmployeeSignUpView
+from users.views import DashboardView, UserSignInView, UserSignUpView, UserUpdateView, UserProfileView, UserDeleteView, EmployeeSignUpView, EmployeeUpdateView
 
 urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
@@ -13,6 +13,7 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(next_page="user-sign-in"), name="user-logout"),
     path("<int:pk>/delete/", UserDeleteView.as_view(), name="user-delete"),
     path("employee/sign-up/", EmployeeSignUpView.as_view(), name="employee-sign-up"),
+    path("employee/<int:pk>/update/", EmployeeUpdateView.as_view(), name="employee-update-profile"),
     path("tables/", DashboardView.as_view(), name="tables"),
     path("tables/", DashboardView.as_view(), name="billing"),
     path("tables/", DashboardView.as_view(), name='virtual-reality'),

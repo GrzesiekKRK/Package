@@ -102,3 +102,60 @@ class RegisterEmployeeForm(UserCreationForm):
             "payroll_account",
             "postal_code",
         )
+
+
+class UpdateEmployeeForm(forms.ModelForm):
+    username = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    first_name = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    last_name = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    phone_number = forms.CharField(
+        max_length=11,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    secondary_email = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    payroll_account = forms.CharField(
+        max_length=26,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    postal_code = forms.CharField(
+        max_length=10,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    class Meta:
+        model = Employee
+        fields = (
+            "department",
+            "username",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "secondary_email",
+            "payroll_account",
+            "postal_code",
+        )

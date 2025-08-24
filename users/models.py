@@ -3,7 +3,6 @@ from django.db import models
 from users import consts as departments
 
 
-
 class CustomUser(AbstractUser):
     """
         Custom user model extending the base AbstractUser to include additional fields
@@ -35,7 +34,6 @@ class CustomUser(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
 
-#TODO ograniczenie przypisania pojazdu do jednego  departamnentu relacja
 class Department(models.Model):
     """
         The Department model represents office or transport hub for company

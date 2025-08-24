@@ -12,7 +12,7 @@ from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from users.models import CustomUser, Employee, Department
-from users.forms import RegisterUserForm, UpdateUserForm, LoginForm, RegisterEmployeeForm
+from users.forms import RegisterUserForm, UpdateUserForm, LoginForm, RegisterEmployeeForm, UpdateEmployeeForm
 
 
 class DashboardView(TemplateView):
@@ -172,3 +172,14 @@ class EmployeeSignUpView(CreateView):
     template_name = "users/sign-up.html"
     form_class = RegisterEmployeeForm
     success_url = reverse_lazy("user-sign-in")
+
+
+class EmployeeProfileView(LoginRequiredMixin, DetailView):
+    model = Employee
+    template_name = "users/profile.html"
+
+
+class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
+    model = Employee
+    template_name = "users/update.html"
+    form_class = UpdateEmployeeForm
