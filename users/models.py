@@ -62,7 +62,7 @@ class Employee(CustomUser):
 
     def __str__(self) -> str:
         return (f""
-                f"{self.user.first_name} {self.user.last_name}"
+                f"{self.first_name} {self.last_name}"
                 f" department {self.department.type} address {self.department.address}"
                 )
 

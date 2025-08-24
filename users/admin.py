@@ -25,6 +25,8 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = [
+                    "first_name",
+                    "last_name",
                     "department",
                     "driver",
                     "driver_semi",
