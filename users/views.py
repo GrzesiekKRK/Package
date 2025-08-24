@@ -11,14 +11,17 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
-from users.models import CustomUser
-from users.forms import RegisterUserForm, UpdateUserForm, LoginForm
+from users.models import CustomUser, Employee, Department
+from users.forms import RegisterUserForm, UpdateUserForm, LoginForm, RegisterEmployeeForm
 
 
 class DashboardView(TemplateView):
     template_name = "package/pages/dashboard.html"
 
 
+#TODO link dla kont pracowniczych
+#TODO generator linków w sidebar pracownika biura
+#TODO widoki dla pracownika CRUD
 class UserSignUpView(CreateView):
     """
         Handles the user signup functionality. After successfully registering, the user is redirected
@@ -161,4 +164,11 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
     model = CustomUser
     template_name = "users/delete.html"
+    success_url = reverse_lazy("user-sign-in")
+
+
+class EmployeeSignUpView(CreateView):
+    model = Employee
+    template_name = "users/sign-up.html"
+    form_class = RegisterEmployeeForm
     success_url = reverse_lazy("user-sign-in")

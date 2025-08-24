@@ -55,12 +55,24 @@
             <i class="material-symbols-rounded opacity-5">person</i>
             <span class="nav-link-text ms-1">Profile</span>
           </a>
+          </li>
+           <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == "create-cargo" %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}" href={% url "create-cargo" %}>
+            <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Create transport demand</span>
+          </a>
         </li>
           <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == "user-update-profile" %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}" href={% url "user-update-profile" %}>
+          <a class="nav-link {% if request.resolver_match.url_name == "cargo-list" %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}" href={% url "cargo-list" user.id %}>
             <i class="material-symbols-rounded opacity-5">person</i>
-            <span class="nav-link-text ms-1">Update Profile</span>
+            <span class="nav-link-text ms-1">Your cargo list</span>
           </a>
+        </li>
+          <li class="nav-item">
+          <form action="{% url 'user-logout' %}" method="POST" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-light">Log out</button>
+                    </form>
         </li>
           {% else %}
         <li class="nav-item">

@@ -12,7 +12,11 @@ from users.forms import RegisterUserForm
 
 from icecream import ic
 
-
+#TODO Notificanions o zamówieniu ładunku
+#TODO employee potwierdza wycen systemu i odsyła z automatu klientowi
+#TODO po akceptacji ceny przez  kilenta  powstaje powiadomienie dla kierowcy i transportu
+#TODO zmiana status na in progres i odbiorze ładunku stan trwa do rozładunku
+#TODO widok potwierdzenia rozładunku przez klienta poprzez podanie kodu
 #TODO bez logowania (tworzenie usera i ładunku naraz)
 class CreateCargoTransport(LoginRequiredMixin, CreateView):
     model = CargoTransport

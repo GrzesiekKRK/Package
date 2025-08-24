@@ -5,10 +5,9 @@ from vehicles.models import Vehicle, VehicleDimension
 class VehicleAdmin(admin.ModelAdmin):
     list_filter = [
         "type",
-        "department"
     ]
-    ordering = ["department"]
-    search_fields = ["department", "plates", "type"]
+    ordering = ["type"]
+    search_fields = ["plates", "type"]
     list_per_page = 25
 
 

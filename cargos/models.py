@@ -5,7 +5,8 @@ from users.models import CustomUser
 
 class CargoTransportStatus(models.Model):
     STATUS_CHOICES = [
-                        (status.STATUS_PENDING_ACCEPTANCE, "Pending acceptance"),
+                        (status.STATUS_PENDING_QUOTATION, "Pending quotation"),
+                        (status.STATUS_PENDING_ACCEPTANCE, "Pending your acceptance"),
                         (status.STATUS_ACCEPTED, "Accepted"),
                         (status.STATUS_IN_PROGRESS, "In progress"),
                         (status.STATUS_COMPLETED, "Completed"),
@@ -20,6 +21,7 @@ class CargoTransportStatus(models.Model):
         return f"Transport demand created at: {self.created_at},last update {self.updated_at}, Status: {self.status}"
 
 
+#TODO Api z google maps
 class CargoTransport(models.Model):
     """
         The CargoTransport model represents customer cargo pickup and delivery point and price.

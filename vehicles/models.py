@@ -1,4 +1,5 @@
 from django.db import models
+
 from users.models import Department
 from vehicles import consts as vehicle_type
 

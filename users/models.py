@@ -3,6 +3,7 @@ from django.db import models
 from users import consts as departments
 
 
+
 class CustomUser(AbstractUser):
     """
         Custom user model extending the base AbstractUser to include additional fields
@@ -34,6 +35,7 @@ class CustomUser(AbstractUser):
         return f"{self.first_name} {self.last_name}"
 
 
+#TODO ograniczenie przypisania pojazdu do jednego  departamnentu relacja
 class Department(models.Model):
     """
         The Department model represents office or transport hub for company
@@ -55,6 +57,7 @@ class Employee(CustomUser):
         The Employee model creates info about drivers assigned to transport departments or office employees.
     """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    payroll_account = models.CharField(max_length=26)
     driver = models.BooleanField(default=True)
     driver_semi = models.BooleanField(default=False)
     on_route = models.BooleanField(default=False)

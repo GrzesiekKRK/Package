@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import CustomUser
+from .models import CustomUser, Employee
 
 
 class RegisterUserForm(UserCreationForm):
@@ -83,3 +83,22 @@ class UpdateUserForm(forms.ModelForm):
             "postal_code",
         )
 
+
+class RegisterEmployeeForm(UserCreationForm):
+    email = forms.EmailField()
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+
+    class Meta:
+        model = Employee
+        fields = (
+            "department",
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "phone_number",
+            "secondary_email",
+            "payroll_account",
+            "postal_code",
+        )
