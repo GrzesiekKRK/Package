@@ -41,7 +41,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}" href={% url 'notifications' %}>
+          <a class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active bg-gradient-dark text-white{% else %}text-dark{% endif %}" href={% url "notification" %}>
             <i class="material-symbols-rounded opacity-5">notifications</i>
             <span class="nav-link-text ms-1">Notifications</span>
           </a>

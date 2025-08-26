@@ -7,13 +7,12 @@ from django.views.generic import CreateView, UpdateView, DetailView, ListView
 
 from cargos.forms import CargoTransportForm, CargoDimensionForm
 from cargos.models import CargoTransport, CargoTransportStatus, CargoDimension
-from users.models import CustomUser
-from users.forms import RegisterUserForm
-from notifications.models import Notification
 
-from icecream import ic
+from notifications.views import OrderNotification
 
-#TODO Notificanions o zamówieniu ładunku
+
+#TODO notifcaton nowe pole info od klienta wpływające na możliwe pojazdy(opis ładunku, miejsca odbioru i rozładunku)
+#TODO link dla pracowniak z dodtkowe pytanie odośnie transportu
 #TODO employee potwierdza wycen systemu i odsyła z automatu klientowi
 #TODO po akceptacji ceny przez  kilenta  powstaje powiadomienie dla kierowcy i transportu
 #TODO zmiana status na in progres i odbiorze ładunku stan trwa do rozładunku
@@ -44,16 +43,11 @@ class CreateCargoTransport(LoginRequiredMixin, CreateView):
                 cargo_dimension = cargo_dimension_form.save(commit=False)
                 cargo_dimension.cargo = cargo
                 cargo_dimension.save()
-                title = f"{cargo_status.id} awaiting verification"
-                body = (f"'Hi your transport demand will be check and evaluation."
-                        f" Once done will send notification with price tag and possible dates if your date we are occcupices."
-                        f" If you accept price confimet by paying with link in notification:"
-                        f" <a href=\"http://127.0.0.1:8000/order/detail/{cargo_status.id}\">"
-                        f"<i class='fas fa-envelope me-2 text-secondary'>"
-                        f"</i>Open notification</a>'")
-                user_notification = Notification(user=user, title=title, body=body)
-                user_notification.save()
-                # company_notification = Notification(user=user, title=title, body=body)
+
+                OrderNotification.client_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user, cargo_status=cargo_status)
+
+                OrderNotification.company_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user, cargo_status=cargo_status)
+
                 return render(request, "cargos/cargo_detail.html", {"cargo": cargo})
 
         context = {
@@ -79,7 +73,6 @@ class CargoTransportStatusListView(LoginRequiredMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
         status = CargoTransportStatus.objects.filter(user=self.request.user)
-        ic(status)
         context['cargos'] = status
 
         return context

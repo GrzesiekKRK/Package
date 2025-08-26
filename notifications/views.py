@@ -6,15 +6,13 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView, TemplateView
 
-from inventories.models import Inventory
-from orders.models import Order, ProductOrder
-from users.models import CustomUser
-
-from .models import Notification
+from cargos.models import CargoTransportStatus, CargoTransport, CargoDimension
+from notifications.models import Notification
+from users.models import CustomUser, Employee, Department
 
 
 class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = "notification/notification.html"
+    template_name = "notifications/notification.html"
 
     def get_context_data(self, **kwargs) -> dict[str:Any]:
         """
@@ -47,7 +45,7 @@ class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
 
 class NotificationDetailTemplateView(LoginRequiredMixin, TemplateView):
     model = Notification
-    template_name = "notification/notification-detail.html"
+    template_name = "notifications/notification-detail.html"
 
     def get_object(self, queryset=None) -> Notification:
         """
@@ -115,7 +113,7 @@ class NotificationDeleteView(LoginRequiredMixin, DeleteView):
     """Handles the deletion of a notification."""
 
     model = Notification
-    template_name = "notification/notification_confirm_delete.html"
+    template_name = "notifications/notification_confirm_delete.html"
     success_url = "/products/"
 
     def get_object(self, queryset=None) -> Notification:
@@ -160,7 +158,7 @@ class OrderNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
-    def buyer_notification(order: Order) -> Notification:
+    def client_notification(cargo_status: CargoTransportStatus, cargo: CargoTransport, cargo_dimension: CargoDimension, user: CustomUser ) -> Notification:
         """
         Creates and sends a notification to the buyer when their payment is accepted.
 
@@ -170,33 +168,19 @@ class OrderNotification:
         Returns:
             Notification: The created notification instance sent to the buyer.
         """
-        buyer = CustomUser.objects.get(id=order.customer.id)
-        title = f"Order {order.id} payment accepted"
-        body = f"'Hi your payment was accepted. To see your order click: <a href=\"http://127.0.0.1:8000/order/detail/{order.id}\"><i class='fas fa-envelope me-2 text-secondary'></i>Open notification</a>'"
-        notification = Notification(user=buyer, title=title, body=body)
-        notification.save()
-        return notification
+        title = f"{cargo_status.id} awaiting verification"
+        body = (f"'Hi your transport demand will be check and evaluation."
+                f" Once done will send notification with price tag and possible dates if your date we are occcupices."
+                f" If you accept price confimet by paying with link in notification:"
+                f" <a href=\"http://127.0.0.1:8000/order/detail/{cargo_status.id}\">"
+                f"<i class='fas fa-envelope me-2 text-secondary'>"
+                f"</i>Open notification</a>'")
+        user_notification = Notification(user=user, title=title, body=body)
+        user_notification.save()
+        return user_notification
 
     @staticmethod
-    def unpacking_products(products_dict: dict) -> str:
-        """
-        Converts the product dictionary into a human-readable string format.
-
-        Args:
-            products_dict (dict): A dictionary containing product names and their quantities.
-
-        Returns:
-            str: A formatted string listing all products and their quantities.
-        """
-        products = products_dict["products"]
-        literal = ""
-        for product, quantity in products.items():
-            literal += " " + product + " " + quantity + "\r\n"
-
-        return literal
-
-    @staticmethod
-    def company_notification(order: Order) -> Notification:
+    def company_notification(cargo_status: CargoTransportStatus, cargo: CargoTransport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
         """
         Creates and sends a notification to the vendor when their products are sold.
 
@@ -206,23 +190,26 @@ class OrderNotification:
         Returns:
             Notification: The created notification instance sent to the vendor.
         """
-        title = f"The purchase of your products has been paid for in orders {order.id}"
 
-        # products_order = ProductOrder.objects.filter(order=order.id)
-        dict_prod = {"products": {}}
-        # for product_order in products_order:
-        #     inventory = Inventory.objects.get(products=product_order.product.id)
-        #     if inventory:
-        #         dict_prod["vendor"] = (
-        #             inventory.vendor.first_name + " " + inventory.vendor.last_name
-        #         )
-        #         dict_prod["products"].update(
-        #             {product_order.product.name: str(product_order.quantity)}
-        #         )
-        # sold_products = OrderNotification.unpacking_products(dict_prod)
-        # body = f"Hi {dict_prod['vendor']} \n\n Sold products:{sold_products}"
+        department, created = Department.objects.get_or_create(id=1, address="Kraków Ćwiartki 3/4")
+        office_employee, created_office_employee = Employee.objects.get_or_create(
+            department=department,
+            username="Tomek",
+            first_name="Tomek",
+            last_name="Benaruczak",
+            email="Package@office.pl",
+            postal_code="34-587",
+            billing_address="Zator",
+            payroll_account="12345678901234567890123456"
+        )
+        office_title = f"{cargo.id} awaiting verification"
+        office_body = (
+            f"'Hi Mr/Mrs {user.first_name} {user.last_name} made a transport demand that need evaluation."
+            f" Here are it data."
+            f" {cargo}"
+            f" {cargo_dimension}"
+        )
 
-        # notification = Notification(user=inventory.vendor, title=title, body=body)
-        # notification.save()
-        # return notification
-        pass
+        company_notification = Notification(user=office_employee, title=office_title, body=office_body)
+        company_notification.save()
+        return company_notification

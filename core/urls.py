@@ -8,7 +8,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("users.urls")),
     path("", include("cargos.urls")),
-    # path("notifications/", include("notifications.urls")),
+    path("notifications/", include("notifications.urls")),
 ]
 
 
