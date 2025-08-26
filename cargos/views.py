@@ -9,6 +9,7 @@ from cargos.forms import CargoTransportForm, CargoDimensionForm
 from cargos.models import CargoTransport, CargoTransportStatus, CargoDimension
 from users.models import CustomUser
 from users.forms import RegisterUserForm
+from notifications.models import Notification
 
 from icecream import ic
 
@@ -43,7 +44,16 @@ class CreateCargoTransport(LoginRequiredMixin, CreateView):
                 cargo_dimension = cargo_dimension_form.save(commit=False)
                 cargo_dimension.cargo = cargo
                 cargo_dimension.save()
-
+                title = f"{cargo_status.id} awaiting verification"
+                body = (f"'Hi your transport demand will be check and evaluation."
+                        f" Once done will send notification with price tag and possible dates if your date we are occcupices."
+                        f" If you accept price confimet by paying with link in notification:"
+                        f" <a href=\"http://127.0.0.1:8000/order/detail/{cargo_status.id}\">"
+                        f"<i class='fas fa-envelope me-2 text-secondary'>"
+                        f"</i>Open notification</a>'")
+                user_notification = Notification(user=user, title=title, body=body)
+                user_notification.save()
+                # company_notification = Notification(user=user, title=title, body=body)
                 return render(request, "cargos/cargo_detail.html", {"cargo": cargo})
 
         context = {
