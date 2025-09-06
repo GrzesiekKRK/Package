@@ -192,7 +192,7 @@ class OrderNotification:
         """
 
         department, created = Department.objects.get_or_create(id=1, address="Kraków Ćwiartki 3/4")
-        office_employee, created_office_employee = Employee.objects.get_or_create(
+        office_employee, created = Employee.objects.get_or_create(
             department=department,
             username="Tomek",
             first_name="Tomek",
@@ -200,11 +200,15 @@ class OrderNotification:
             email="Package@office.pl",
             postal_code="34-587",
             billing_address="Zator",
-            payroll_account="12345678901234567890123456"
+            payroll_account="12345678901234567890123456",
+
         )
+        if created:
+            office_employee.set_password("pass")
+            office_employee.save()
         office_title = f"{cargo.id} awaiting verification"
         office_body = (
-            f"'Hi Mr/Mrs {user.first_name} {user.last_name} made a transport demand that need evaluation."
+            f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
             f" {cargo}"
             f" {cargo_dimension}"

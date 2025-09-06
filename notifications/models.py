@@ -18,7 +18,6 @@ class Notification(models.Model):
     is_read = models.BooleanField(verbose_name="read", default=False)
     title = models.CharField(max_length=100)
     body = models.TextField()
-    notes = models.CharField(max_length=900, blank=True, null=True, verbose_name="Additional information")# W templacie"About cargo and loading and unloading place"
 
     def __str__(self) -> str:
         return f"Notification of user {self.user} {self.body}"

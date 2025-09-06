@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import CustomUser,Department, Employee
+from .models import CustomUser, Department, Employee
 
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -40,3 +40,4 @@ class EmployeeAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Employee, EmployeeAdmin)
+

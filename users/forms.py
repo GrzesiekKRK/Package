@@ -158,4 +158,6 @@ class UpdateEmployeeForm(forms.ModelForm):
             "secondary_email",
             "payroll_account",
             "postal_code",
+            "driver",
+            "driver_semi"
         )

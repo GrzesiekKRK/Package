@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from schedules.models import Schedule
+from schedules.models import Schedule, SickLeave, AnnualLeave
 
 
 class ScheduleAdmin(admin.ModelAdmin):
@@ -16,3 +16,5 @@ class ScheduleAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Schedule, ScheduleAdmin)
+admin.site.register(SickLeave)
+admin.site.register(AnnualLeave)

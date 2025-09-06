@@ -11,7 +11,7 @@ from cargos.models import CargoTransport, CargoTransportStatus, CargoDimension
 from notifications.views import OrderNotification
 
 
-#TODO notifcaton nowe pole info od klienta wpływające na możliwe pojazdy(opis ładunku, miejsca odbioru i rozładunku)
+
 #TODO link dla pracowniak z dodtkowe pytanie odośnie transportu
 #TODO employee potwierdza wycen systemu i odsyła z automatu klientowi
 #TODO po akceptacji ceny przez  kilenta  powstaje powiadomienie dla kierowcy i transportu

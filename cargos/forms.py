@@ -13,6 +13,7 @@ class CargoTransportForm(forms.ModelForm):
             "price",
             "collection_address",
             "delivery_address",
+            "notes"
         ]
 
 

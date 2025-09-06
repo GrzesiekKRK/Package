@@ -46,6 +46,10 @@ class CargoTransport(models.Model):
         help_text="Delivery address",
         default="AZM"
     )
+    notes = models.TextField(max_length=900, blank=True, null=True,
+                             verbose_name="Additional information",
+                             help_text='About cargo, loading and unloading place',
+                             )
 
     def __str__(self) -> str:
         return (f""
