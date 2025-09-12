@@ -6,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView, TemplateView
 
-from cargos.models import CargoTransportStatus, CargoTransport, CargoDimension
+from transport.models import TransportStatus, Transport, CargoDimension
 from notifications.models import Notification
 from users.models import CustomUser, Employee, Department
 
@@ -158,7 +158,7 @@ class OrderNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
-    def client_notification(cargo_status: CargoTransportStatus, cargo: CargoTransport, cargo_dimension: CargoDimension, user: CustomUser ) -> Notification:
+    def client_notification(cargo_status: TransportStatus, cargo: Transport, cargo_dimension: CargoDimension, user: CustomUser ) -> Notification:
         """
         Creates and sends a notification to the buyer when their payment is accepted.
 
@@ -180,7 +180,7 @@ class OrderNotification:
         return user_notification
 
     @staticmethod
-    def company_notification(cargo_status: CargoTransportStatus, cargo: CargoTransport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
+    def company_notification(cargo_status: TransportStatus, cargo: Transport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
         """
         Creates and sends a notification to the vendor when their products are sold.
 

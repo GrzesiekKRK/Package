@@ -1,15 +1,15 @@
 from django.contrib import admin
 
-from cargos.models import CargoTransportStatus, CargoTransport, CargoDimension
+from transport.models import TransportStatus, Transport, CargoDimension
 
 
-class CargoTransportStatusAdmin(admin.ModelAdmin):
+class TransportStatusAdmin(admin.ModelAdmin):
     list_filter = ["status"]
     list_per_page = 25
     ordering = ["-status"]
 
 
-class CargoTransportAdmin(admin.ModelAdmin):
+class TransportAdmin(admin.ModelAdmin):
     list_filter = [
         "collection_date",
         "collection_address",
@@ -22,16 +22,16 @@ class CargoTransportAdmin(admin.ModelAdmin):
 
 class CargoDimensionAdmin(admin.ModelAdmin):
     list_filter = [
-                    "cargo",
+                    "transport",
                     "length",
                     "width",
                     "height",
                     "weight",
                     ]
-    ordering = ["cargo"]
+    ordering = ["transport"]
     list_per_page = 25
 
 
-admin.site.register(CargoTransportStatus, CargoTransportStatusAdmin)
-admin.site.register(CargoTransport, CargoTransportAdmin)
+admin.site.register(TransportStatus, TransportStatusAdmin)
+admin.site.register(Transport, TransportAdmin)
 admin.site.register(CargoDimension, CargoDimensionAdmin)

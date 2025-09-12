@@ -1,9 +1,9 @@
 from django.db import models
-from cargos import consts as status
-from users.models import CustomUser
+from transport import consts as status
+from users.models import CustomUser, Employee
 
 
-class CargoTransportStatus(models.Model):
+class TransportStatus(models.Model):
     STATUS_CHOICES = [
                         (status.STATUS_PENDING_QUOTATION, "Pending quotation"),
                         (status.STATUS_PENDING_ACCEPTANCE, "Pending your acceptance"),
@@ -22,12 +22,13 @@ class CargoTransportStatus(models.Model):
 
 
 #TODO Api z google maps
-class CargoTransport(models.Model):
+class Transport(models.Model):
     """
         The CargoTransport model represents customer cargo pickup and delivery point and price.
         Working in conjunction with OrderDimension for better performance
     """
-    cargo_status = models.ForeignKey(CargoTransportStatus, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    cargo_status = models.ForeignKey(TransportStatus, on_delete=models.CASCADE)
     total_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Distance", default=1)
     total_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Duration", default=1)
     transport_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Distance", default=1)
@@ -69,7 +70,7 @@ class CargoDimension(models.Model):
     The CargoDimension model represents cargo dimensions it weights.
      With its help will decide what type of vehicle will do CargoTransport.
     """
-    cargo = models.OneToOneField(CargoTransport, on_delete=models.CASCADE, verbose_name="Cargo", related_name='dimensions')
+    transport = models.OneToOneField(Transport, on_delete=models.CASCADE, verbose_name="Cargo", related_name='dimensions')
     length = models.FloatField(help_text='length of the cargo bed in centimeters', verbose_name="Length", default=1)
     width = models.FloatField(help_text='width  of the cargo bed in centimeters',  verbose_name="Width", default=1)
     height = models.FloatField(help_text='height of the cargo bed in centimeters', verbose_name="Height", default=1)

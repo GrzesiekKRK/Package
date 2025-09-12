@@ -1,10 +1,10 @@
 from django import forms
-from cargos.models import CargoTransport, CargoDimension
+from transport.models import Transport, CargoDimension
 
 
-class CargoTransportForm(forms.ModelForm):
+class TransportForm(forms.ModelForm):
     class Meta:
-        model = CargoTransport
+        model = Transport
         fields = [
             "total_distance",
             "total_duration",

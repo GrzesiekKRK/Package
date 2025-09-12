@@ -178,8 +178,25 @@ class EmployeeProfileView(LoginRequiredMixin, DetailView):
     model = Employee
     template_name = "users/profile.html"
 
+    def get_object(self, queryset: Optional[QuerySet[Employee]] = None) -> Employee:
+        """
+        Retrieves the current user's profile to be updated.
 
+        Args:
+            queryset (Optional[QuerySet[CustomUser]]): The queryset used for filtering users.
+
+        Returns:
+            CustomUser: The current user's profile.
+        """
+        employee = Employee.objects.prefetch_related("sick_leaves", 'annual_leaves').get(id=self.request.user.id)
+        return employee
+
+# Dane osobowe
 class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
     model = Employee
     template_name = "users/update.html"
     form_class = UpdateEmployeeForm
+
+#Grafik urlopy bądź dni pracy/transporty forma kalendarza z linkami do transportów, połączone z możliwościa rozpoczęcia transportu
+class EmployeeSchedules(LoginRequiredMixin, DetailView):
+    model = Employee

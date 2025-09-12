@@ -23,7 +23,7 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_EXTENSIONS = [
-    "cargos",
+    "transport",
     "notifications",
     "schedules",
     "users",
