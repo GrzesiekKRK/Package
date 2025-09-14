@@ -36,7 +36,7 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = f"{self.first_name} {self.last_name}"
+            self.slug = f"{self.first_name}-{self.last_name}"
 
         super().save(*args, **kwargs)
 
