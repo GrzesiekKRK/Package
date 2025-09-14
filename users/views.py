@@ -191,11 +191,13 @@ class EmployeeProfileView(LoginRequiredMixin, DetailView):
         employee = Employee.objects.prefetch_related("sick_leaves", 'annual_leaves').get(id=self.request.user.id)
         return employee
 
+
 # Dane osobowe
 class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
     model = Employee
     template_name = "users/update.html"
     form_class = UpdateEmployeeForm
+
 
 #Grafik urlopy bądź dni pracy/transporty forma kalendarza z linkami do transportów, połączone z możliwościa rozpoczęcia transportu
 class EmployeeSchedules(LoginRequiredMixin, DetailView):

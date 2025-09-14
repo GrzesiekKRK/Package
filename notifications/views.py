@@ -158,7 +158,7 @@ class OrderNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
-    def client_notification(cargo_status: TransportStatus, cargo: Transport, cargo_dimension: CargoDimension, user: CustomUser ) -> Notification:
+    def client_notification(cargo_status: TransportStatus, user: CustomUser, cargo: Transport = None, cargo_dimension: CargoDimension = None ) -> Notification:
         """
         Creates and sends a notification to the buyer when their payment is accepted.
 

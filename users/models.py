@@ -15,6 +15,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=50, unique=True, verbose_name="Email")
     phone_number = models.CharField(max_length=11, verbose_name="Phone Number")
     created_at = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(null=True, blank=True)
     secondary_email = models.EmailField(
         max_length=50,
         null=True,
@@ -32,6 +33,12 @@ class CustomUser(AbstractUser):
     postal_code = models.CharField(
         max_length=10, verbose_name="Postal Code", default="32-856"
     )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = f"{self.first_name} {self.last_name}"
+
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"

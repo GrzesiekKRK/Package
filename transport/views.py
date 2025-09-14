@@ -1,5 +1,5 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import TemplateView, LoginView
 from django.views.generic.edit import DeleteView
@@ -34,9 +34,25 @@ class CreateTransport(LoginRequiredMixin, CreateView):
 
             if transport_form.is_valid() and cargo_dimension_form.is_valid():
                 #DICT
-                ic(transport_form.cleaned_data)
-                ic(transport_form)
-                # cargo_status = TransportStatus.objects.create(user=user)
+                data = transport_form.cleaned_data
+                data_for_calculation = {
+                                        'collection_address': data['collection_address'],
+                                        'delivery_address': data['delivery_address'],
+                                        'notes': data['notes'],
+                                        'price': data['price'],
+                                        'total_distance': data['total_distance'],
+                                        'total_duration': data['total_duration'],
+                                        'transport_distance': data['transport_distance'],
+                                        'transport_duration': data['transport_duration']
+                                        }
+                #FORMA dalej
+                form_for_calculation = transport_form
+                cargo_for_calculation = cargo_dimension_form
+                cargo_status = TransportStatus.objects.create(user=user)
+                OrderNotification.client_notification(cargo_status=cargo_status, user=user)
+
+                return redirect("notification")
+
                 # OrderNotification.client_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user,
                 #                                       cargo_status=cargo_status)
                 # OrderNotification.company_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user,

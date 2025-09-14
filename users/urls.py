@@ -11,7 +11,7 @@ urlpatterns = [
     path("update/", UserUpdateView.as_view(), name="user-update-profile"),
     path("profile/", UserProfileView.as_view(), name="user-profile"),
     path("logout/", LogoutView.as_view(next_page="user-sign-in"), name="user-logout"),
-    path("<int:pk>/delete/", UserDeleteView.as_view(), name="user-delete"),
+    path("<slug:slug>/delete/", UserDeleteView.as_view(), name="user-delete"),
     path("employee/sign-up/", EmployeeSignUpView.as_view(), name="employee-sign-up"),
     path("employee/<int:pk>/update/", EmployeeUpdateView.as_view(), name="employee-update-profile"),
     path("tables/", DashboardView.as_view(), name="tables"),
