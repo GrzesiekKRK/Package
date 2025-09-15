@@ -3,7 +3,7 @@ from django.db import models
 from users import consts as departments
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-
+from icecream import ic
 
 #TODO Factories
 class CustomUser(AbstractUser):
@@ -35,13 +35,20 @@ class CustomUser(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = f"{self.first_name}-{self.last_name}"
-
+        self.check_slug()
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+    def check_slug(self):
+        if not self.slug:
+            number = 1
+            slug = f"{self.first_name}-{self.last_name}"
+            while CustomUser.objects.filter(slug=slug).exists():
+                slug = f"{self.first_name}-{self.last_name}-{number}"
+                number += 1
+            self.slug = slug
 
 
 class Department(models.Model):

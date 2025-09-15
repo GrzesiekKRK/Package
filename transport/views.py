@@ -20,7 +20,7 @@ from icecream import ic
 #TODO bez logowania (tworzenie usera i ładunku naraz)
 class CreateTransport(LoginRequiredMixin, CreateView):
     model = Transport
-    template_name = "cargos/create_cargo.html"
+    template_name = "transport/create-transport.html"
 
     @staticmethod
     def create_transport_status(request, *args, **kwargs):
@@ -76,12 +76,12 @@ class CreateTransport(LoginRequiredMixin, CreateView):
             "cargo_dimension_form": cargo_dimension_form,
         }
 
-        return render(request, "cargos/create_cargo.html", context)
+        return render(request, "transport/create_transport.html", context)
 
 
 class TransportStatusListView(LoginRequiredMixin, ListView):
     model = Transport
-    template_name = "cargos/cargo_list.html"
+    template_name = "transport/transport_list.html"
 
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         """
@@ -94,11 +94,11 @@ class TransportStatusListView(LoginRequiredMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
         status = TransportStatus.objects.filter(user=self.request.user)
-        context['cargos'] = status
+        context['transports'] = status
 
         return context
 
 
 class TransportDetailView(LoginRequiredMixin, DetailView):
     model = Transport
-    template_name = "cargos/cargo_detail.html"
+    template_name = "transport/transport_detail.html"
