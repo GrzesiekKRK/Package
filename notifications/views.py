@@ -158,7 +158,7 @@ class OrderNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
-    def client_notification(cargo_status: TransportStatus, user: CustomUser, cargo: Transport = None, cargo_dimension: CargoDimension = None ) -> Notification:
+    def client_notification(transport_status: TransportStatus, user: CustomUser, transport: Transport = None, cargo_dimension: CargoDimension = None ) -> Notification:
         """
         Creates and sends a notification to the buyer when their payment is accepted.
 
@@ -168,11 +168,11 @@ class OrderNotification:
         Returns:
             Notification: The created notification instance sent to the buyer.
         """
-        title = f"{cargo_status.id} awaiting verification"
+        title = f"{transport_status.id} awaiting verification"
         body = (f"'Hi your transport demand will be check and evaluation."
                 f" Once done will send notification with price tag and possible dates if your date we are occcupices."
                 f" If you accept price confimet by paying with link in notification:"
-                f" <a href=\"http://127.0.0.1:8000/order/detail/{cargo_status.id}\">"
+                f" <a href=\"http://127.0.0.1:8000/order/detail/{transport_status.id}\">"
                 f"<i class='fas fa-envelope me-2 text-secondary'>"
                 f"</i>Open notification</a>'")
         user_notification = Notification(user=user, title=title, body=body)
@@ -180,7 +180,7 @@ class OrderNotification:
         return user_notification
 
     @staticmethod
-    def company_notification(cargo_status: TransportStatus, cargo: Transport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
+    def company_notification(transport_status: TransportStatus, transport: Transport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
         """
         Creates and sends a notification to the vendor when their products are sold.
 
@@ -206,11 +206,11 @@ class OrderNotification:
         if created:
             office_employee.set_password("pass")
             office_employee.save()
-        office_title = f"{cargo.id} awaiting verification"
+        office_title = f"{transport.id} awaiting verification"
         office_body = (
             f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
-            f" {cargo}"
+            f" {transport}"
             f" {cargo_dimension}"
         )
 
