@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 
-from users.models import CustomUser
+from users.models import Person
 
 
 class Notification(models.Model):
@@ -13,7 +13,7 @@ class Notification(models.Model):
     """
 
     user = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name="notifications"
+        Person, on_delete=models.CASCADE, related_name="notifications"
     )
     is_read = models.BooleanField(verbose_name="read", default=False)
     title = models.CharField(max_length=100)

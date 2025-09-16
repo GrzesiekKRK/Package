@@ -5,13 +5,12 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from icecream import ic
 
-#TODO Factories
-class CustomUser(AbstractUser):
+
+class Person(AbstractUser):
     """
-        Custom user model extending the base AbstractUser to include additional fields
-        specific to the application. This includes role management, user-specific
-        information, and secondary contact details.
-    """
+            'Person model' extending the base AbstractUser to include additional fields
+            specific to the application. This includes user-specific information and secondary contact details.
+        """
     email = models.EmailField(max_length=50, unique=True, verbose_name="Email")
     phone_number = models.CharField(max_length=11, verbose_name="Phone Number")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -51,6 +50,14 @@ class CustomUser(AbstractUser):
             self.slug = slug
 
 
+#TODO Factories
+class CustomUser(Person):
+    """
+        'CustomUser model' is a customer class created to keep an avenue to extend customer
+         without making changes to 'Employee model'.
+    """
+
+
 class Department(models.Model):
     """
         The Department model represents office or transport hub for company
@@ -68,16 +75,15 @@ class Department(models.Model):
 
 
 #TODO konto powstaje z randomowym hasłem i wymaganie zmiany po 1 logowaniu
-class Employee(CustomUser):
+class Employee(Person):
     """
-        The Employee model creates info about drivers assigned to transport departments or office employees.
+        The Employee model extends 'Person model' and stores info are they drivers assigned to transport departments or office employees.
+        Keep payroll account.
     """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     payroll_account = models.CharField(max_length=26)
     driver = models.BooleanField(default=False)
     driver_semi = models.BooleanField(default=False)
-    on_route = models.BooleanField(default=False)
-    annual_leave_days = models.PositiveIntegerField(default=26, help_text="Number of annual leave days")
 
     def __str__(self) -> str:
         return (f""
@@ -113,3 +119,15 @@ class Employee(CustomUser):
                     end_date__gte=date
                 ).exists()
         )
+
+
+class EmployeeStatus(models.Model):
+    """'EmployeeStatus model' keep track is employee avaibble how many annual leave days are left or are they on sick leaves or transportin something now"""
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    on_route = models.BooleanField(default=False)
+    annual_leave_days_total = models.PositiveIntegerField(default=26, help_text="Number of annual leave days")
+    annual_leave_days_used = models.PositiveIntegerField(default=0, help_text="Number of annual leave days used")
+    absence_status = models.BooleanField(default=False)
+    absence_days = models.PositiveIntegerField(default=0, help_text="Number of absence days")
+    sick_leaves_days = models.PositiveIntegerField(default=0, help_text="Number of sick leave days given by doctor")
+    sick_leaves_days_taken = models.PositiveIntegerField(default=0, help_text="Number of sick leave days")
