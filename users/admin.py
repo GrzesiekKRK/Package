@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import CustomUser, Department, Employee, EmployeeStatus
+from .models import CustomUser, Client, Department, Employee, EmployeeStatus
 
 
-class CustomUserAdmin(admin.ModelAdmin):
+class ClientAdmin(admin.ModelAdmin):
     list_display = [
         "username",
         "first_name",
@@ -52,7 +52,8 @@ class EmployeeStatusAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Client, ClientAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(EmployeeStatus, EmployeeStatusAdmin)
+admin.site.register(CustomUser)

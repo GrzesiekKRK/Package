@@ -1,16 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import CustomUser, Employee
+from .models import Client, Employee
 
 
-class RegisterUserForm(UserCreationForm):
+class RegisterClientForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
 
     class Meta:
-        model = CustomUser
+        model = Client
         fields = (
             "username",
             "first_name",
@@ -28,7 +28,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput)
 
 
-class UpdateUserForm(forms.ModelForm):
+class UpdateClientForm(forms.ModelForm):
     username = forms.CharField(
         max_length=50,
         required=True,
@@ -72,7 +72,7 @@ class UpdateUserForm(forms.ModelForm):
     )
 
     class Meta:
-        model = CustomUser
+        model = Client
         fields = (
             "username",
             "first_name",
@@ -98,9 +98,6 @@ class RegisterEmployeeForm(UserCreationForm):
             "last_name",
             "email",
             "phone_number",
-            "secondary_email",
-            "payroll_account",
-            "postal_code",
         )
 
 
@@ -129,24 +126,6 @@ class UpdateEmployeeForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
-    secondary_email = forms.CharField(
-        max_length=50,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-
-    payroll_account = forms.CharField(
-        max_length=26,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-
-    postal_code = forms.CharField(
-        max_length=10,
-        required=True,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
-
     class Meta:
         model = Employee
         fields = (
@@ -155,9 +134,6 @@ class UpdateEmployeeForm(forms.ModelForm):
             "first_name",
             "last_name",
             "phone_number",
-            "secondary_email",
-            "payroll_account",
-            "postal_code",
             "driver",
             "driver_semi"
         )

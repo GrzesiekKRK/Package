@@ -49,15 +49,15 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
         </li>
-      {% if request.user.is_authenticated and not request.user.employee %}
+      {% if request.user.is_authenticated %}
           <li class="nav-item">
-          <a class="nav-link text-dark" href={% url "user-profile" request.user.slug %}>
+          <a class="nav-link text-dark" href={% url "user-profile" request.user.client.slug %}>
             <i class="material-symbols-rounded opacity-5">person</i>
             <span class="nav-link-text ms-1 ">Profile</span>
           </a>
         </li>
           <li class="nav-item">
-          <a class="nav-link text-dark" href={% url "user-update-profile" request.user.slug %}>
+          <a class="nav-link text-dark" href={% url "user-update-profile" request.user.client.slug %}>
               <i class="material-symbols-rounded opacity-5">person</i>
             <span class="nav-link-text ms-1">Update Profile</span>
           </a>
@@ -76,7 +76,7 @@
         </li>
           {% if request.user.is_authenticated and request.user.employee %}
           <li class="nav-item">
-          <a class="nav-link text-dark" href={% url "user-profile" request.user.slug%}>
+          <a class="nav-link text-dark" href={% url "user-profile" request.user.client.slug%}>
             <i class="material-symbols-rounded opacity-5">person</i>
             <span class="nav-link-text ms-1 ">Profile</span>
           </a>

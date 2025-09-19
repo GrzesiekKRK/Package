@@ -11,6 +11,8 @@ from transport.models import Transport, TransportStatus, CargoDimension
 from notifications.views import OrderNotification
 from icecream import ic
 
+from users.models import CustomUser
+
 
 #TODO link dla pracowniak z dodtkowe pytanie odośnie transportu
 #TODO employee potwierdza wycen systemu i odsyła z automatu klientowi
@@ -24,7 +26,7 @@ class CreateTransport(LoginRequiredMixin, CreateView):
 
     @staticmethod
     def create_transport_status(request, *args, **kwargs):
-        user = request.user
+        user = CustomUser.objects.get(id=request.user.id)
         transport_form = TransportForm()
         cargo_dimension_form = CargoDimensionForm()
 
@@ -48,9 +50,10 @@ class CreateTransport(LoginRequiredMixin, CreateView):
                 #FORMA dalej
                 form_for_calculation = transport_form
                 cargo_for_calculation = cargo_dimension_form
+                ic(user)
                 cargo_status = TransportStatus.objects.create(user=user)
-                OrderNotification.client_notification(cargo_status=cargo_status, user=user)
-
+                OrderNotification.client_notification(transport_status=cargo_status, user=user)
+                OrderNotification.company_notification(transport_status=cargo_status, cargo_dimension=cargo_for_calculation, transport=form_for_calculation, user=user)
                 return redirect("notification")
 
                 # OrderNotification.client_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user,

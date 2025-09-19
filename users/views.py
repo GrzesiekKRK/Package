@@ -4,15 +4,15 @@ from django.contrib.auth.views import TemplateView, LoginView
 from django.views.generic.edit import DeleteView
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth import authenticate, login
-from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
-from users.models import CustomUser, Employee, Department
-from users.forms import RegisterUserForm, UpdateUserForm, LoginForm, RegisterEmployeeForm, UpdateEmployeeForm
+from users.models import CustomUser, Client, Employee, Department
+from users.forms import RegisterClientForm, UpdateClientForm, LoginForm, RegisterEmployeeForm, UpdateEmployeeForm
+from icecream import ic
 
 
 class DashboardView(TemplateView):
@@ -29,7 +29,7 @@ class UserSignUpView(CreateView):
     """
     template_name = "users/sign-up.html"
     success_url = reverse_lazy("user-sign-in")
-    form_class = RegisterUserForm
+    form_class = RegisterClientForm
     success_message = "Your profile was created successfully"
 
 
@@ -43,7 +43,7 @@ class UserSignInView(LoginView):
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         """
         Handles the POST request for user login. It validates the login form, authenticates
-        the user, and redirects to the products page if successful.
+        the user, and redirects to the dashboard page if successful.
 
         Args:
             request (HttpRequest): The HTTP request object.
@@ -53,13 +53,13 @@ class UserSignInView(LoginView):
             HttpResponse: The response after processing the login request.
         """
         form = LoginForm(request.POST)
-
+        ic(form)
         if form.is_valid():
             username, password = (
                 form.cleaned_data["username"],
                 form.cleaned_data["password"],
             )
-
+            ic(username, password)
             user = authenticate(request, username=username, password=password)
 
             if user:
@@ -76,7 +76,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     """
 
     template_name = "users/update.html"
-    form_class = UpdateUserForm
+    form_class = UpdateClientForm
 
     def get_object(self, queryset: Optional[QuerySet[CustomUser]] = None) -> CustomUser:
         """
@@ -98,7 +98,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         Returns:
             HttpResponse: The response with the success URL.
         """
-        user = CustomUser.objects.get(id=self.request.user.id)
+        user = Client.objects.get(id=self.request.user.id)
         return render(self.request, "users/update.html", {"user": user})
 
     def post(
@@ -116,16 +116,16 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             HttpResponse | HttpResponseRedirect: The response after processing the update.
         """
         if request.method == "POST":
-            form = UpdateUserForm(request.POST, instance=request.user)
+            form = UpdateClientForm(request.POST, instance=request.user)
             if form.is_valid():
                 form.save()
                 messages.success(request, "Your profile is updated successfully")
                 return redirect("user-profile")
         else:
-            form = UpdateUserForm()
+            form = UpdateClientForm()
         return render(request, "users/update.html", {"form": form})
 
-    def form_invalid(self, form: UpdateUserForm) -> TemplateResponse:
+    def form_invalid(self, form: UpdateClientForm) -> TemplateResponse:
         """
         Handles the case where the update form is invalid. Displays an error message.
 
@@ -152,7 +152,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         Returns:
             CustomUser: The current user's profile.
         """
-        user = CustomUser.objects.get(id=self.request.user.id)
+        user = Client.objects.get(id=self.request.user.id)
         return user
 
 
@@ -162,7 +162,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
     to the login page.
     """
 
-    model = CustomUser
+    model = Client
     template_name = "users/delete.html"
     success_url = reverse_lazy("user-sign-in")
 
@@ -183,10 +183,10 @@ class EmployeeProfileView(LoginRequiredMixin, DetailView):
         Retrieves the current user's profile to be updated.
 
         Args:
-            queryset (Optional[QuerySet[CustomUser]]): The queryset used for filtering users.
+            queryset (Optional[QuerySet[Employee]]): The queryset used for filtering users.
 
         Returns:
-            CustomUser: The current user's profile.
+            Employee: The employee profile.
         """
         employee = Employee.objects.prefetch_related("sick_leaves", 'annual_leaves').get(id=self.request.user.id)
         return employee

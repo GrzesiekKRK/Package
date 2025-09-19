@@ -9,6 +9,8 @@ from django.views.generic import DeleteView, TemplateView
 from transport.models import TransportStatus, Transport, CargoDimension
 from notifications.models import Notification
 from users.models import CustomUser, Employee, Department
+from transport.forms import TransportForm, CargoDimensionForm
+from icecream import ic
 
 
 class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
@@ -158,7 +160,7 @@ class OrderNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
-    def client_notification(transport_status: TransportStatus, user: CustomUser, transport: Transport = None, cargo_dimension: CargoDimension = None ) -> Notification:
+    def client_notification(transport_status: TransportStatus, user: CustomUser ) -> Notification:
         """
         Creates and sends a notification to the buyer when their payment is accepted.
 
@@ -180,7 +182,7 @@ class OrderNotification:
         return user_notification
 
     @staticmethod
-    def company_notification(transport_status: TransportStatus, transport: Transport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
+    def company_notification(transport_status: TransportStatus, transport: TransportForm, cargo_dimension: CargoDimensionForm, user: CustomUser) -> Notification:
         """
         Creates and sends a notification to the vendor when their products are sold.
 
@@ -191,25 +193,24 @@ class OrderNotification:
             Notification: The created notification instance sent to the vendor.
         """
 
-        department, created = Department.objects.get_or_create(id=1, address="Kraków Ćwiartki 3/4")
+        department, created = Department.objects.get_or_create(id=1, addres="Kraków")
         office_employee, created = Employee.objects.get_or_create(
             department=department,
             username="Tomek",
             first_name="Tomek",
             last_name="Benaruczak",
             email="Package@office.pl",
-            postal_code="34-587",
-            billing_address="Zator",
-            payroll_account="12345678901234567890123456",
+            phone_number="123123123"
 
         )
         if created:
-            office_employee.set_password("pass")
+            office_employee.set_password("ad")
             office_employee.save()
-        office_title = f"{transport.id} awaiting verification"
+        office_title = f"{transport} awaiting verification"
         office_body = (
             f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
+            f"{transport_status}"
             f" {transport}"
             f" {cargo_dimension}"
         )

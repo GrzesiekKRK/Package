@@ -1,6 +1,6 @@
 from django.db import models
 from transport import consts as status
-from users.models import CustomUser, Employee
+from users.models import Employee, CustomUser
 
 
 class TransportStatus(models.Model):
@@ -16,6 +16,9 @@ class TransportStatus(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=status.STATUS_PENDING_ACCEPTANCE)
+
+    class Meta:
+        verbose_name_plural = "Transport Status"
 
     def __str__(self) -> str:
         return f"Transport demand created at: {self.created_at},last update {self.updated_at}, Status: {self.status}"

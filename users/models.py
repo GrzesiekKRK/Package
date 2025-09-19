@@ -2,11 +2,9 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from users import consts as departments
 from django.utils import timezone
-from django.core.exceptions import ValidationError
-from icecream import ic
 
 
-class Person(AbstractUser):
+class CustomUser(AbstractUser):
     """
             'Person model' extending the base AbstractUser to include additional fields
             specific to the application. This includes user-specific information and secondary contact details.
@@ -14,6 +12,17 @@ class Person(AbstractUser):
     email = models.EmailField(max_length=50, unique=True, verbose_name="Email")
     phone_number = models.CharField(max_length=11, verbose_name="Phone Number")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
+
+#TODO Factories
+class Client(CustomUser):
+    """
+        'Client model' is a customer class created to keep an avenue to extend CustomUser
+         without making changes to 'Employee model'.
+    """
     slug = models.SlugField(null=True, blank=True)
     secondary_email = models.EmailField(
         max_length=50,
@@ -34,28 +43,8 @@ class Person(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
-        self.check_slug()
+        self.slug = self.username
         super().save(*args, **kwargs)
-
-    def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name}"
-
-    def check_slug(self):
-        if not self.slug:
-            number = 1
-            slug = f"{self.first_name}-{self.last_name}"
-            while CustomUser.objects.filter(slug=slug).exists():
-                slug = f"{self.first_name}-{self.last_name}-{number}"
-                number += 1
-            self.slug = slug
-
-
-#TODO Factories
-class CustomUser(Person):
-    """
-        'CustomUser model' is a customer class created to keep an avenue to extend customer
-         without making changes to 'Employee model'.
-    """
 
 
 class Department(models.Model):
@@ -75,13 +64,12 @@ class Department(models.Model):
 
 
 #TODO konto powstaje z randomowym hasłem i wymaganie zmiany po 1 logowaniu
-class Employee(Person):
+class Employee(CustomUser):
     """
         The Employee model extends 'Person model' and stores info are they drivers assigned to transport departments or office employees.
         Keep payroll account.
     """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    payroll_account = models.CharField(max_length=26)
     driver = models.BooleanField(default=False)
     driver_semi = models.BooleanField(default=False)
 
@@ -122,7 +110,7 @@ class Employee(Person):
 
 
 class EmployeeStatus(models.Model):
-    """'EmployeeStatus model' keep track is employee avaibble how many annual leave days are left or are they on sick leaves or transportin something now"""
+    """'EmployeeStatus model' keep track is employee avaible how many annual leave days are left or are they on sick leaves or transportin something now"""
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     on_route = models.BooleanField(default=False)
     annual_leave_days_total = models.PositiveIntegerField(default=26, help_text="Number of annual leave days")
@@ -131,3 +119,6 @@ class EmployeeStatus(models.Model):
     absence_days = models.PositiveIntegerField(default=0, help_text="Number of absence days")
     sick_leaves_days = models.PositiveIntegerField(default=0, help_text="Number of sick leave days given by doctor")
     sick_leaves_days_taken = models.PositiveIntegerField(default=0, help_text="Number of sick leave days")
+
+    class Meta:
+        verbose_name_plural = "Employee Status"
