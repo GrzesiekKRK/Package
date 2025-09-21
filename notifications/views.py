@@ -192,11 +192,11 @@ class OrderNotification:
         Returns:
             Notification: The created notification instance sent to the vendor.
         """
-
-        department, created = Department.objects.get_or_create(id=1, addres="Kraków")
+        FIRST_DEPARTMENT = (1, 'Kraków')
+        department, created = Department.objects.get_or_create(id=FIRST_DEPARTMENT[0], address=FIRST_DEPARTMENT[1])
         office_employee, created = Employee.objects.get_or_create(
             department=department,
-            username="Tomek",
+            username="zx",
             first_name="Tomek",
             last_name="Benaruczak",
             email="Package@office.pl",
@@ -210,11 +210,21 @@ class OrderNotification:
         office_body = (
             f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
-            f"{transport_status}"
-            f" {transport}"
-            f" {cargo_dimension}"
+            f"{transport_status.id}"
+            f" {transport['total_distance']}"
+            f"{transport['transport_distance']}"
+            f"{transport['price']}"
+            f"{transport['collection_address']}"
+            f"{transport['delivery_address']}"
+            f"{transport['notes']}"
+            f" {cargo_dimension['length']}"
+            f"{cargo_dimension['width']}"
+            f"{cargo_dimension['height']}"
         )
-
+        ic(user)
+        ic(transport_status.id)
+        ic(transport)
+        ic(cargo_dimension)
         company_notification = Notification(user=office_employee, title=office_title, body=office_body)
         company_notification.save()
         return company_notification

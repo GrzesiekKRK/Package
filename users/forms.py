@@ -55,7 +55,7 @@ class UpdateClientForm(forms.ModelForm):
 
     secondary_email = forms.CharField(
         max_length=50,
-        required=True,
+        required=False,
         widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 

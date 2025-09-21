@@ -42,6 +42,10 @@ class Client(CustomUser):
         max_length=10, verbose_name="Postal Code", default="32-856"
     )
 
+    class Meta:
+        verbose_name = "Client"
+        verbose_name_plural = "Clients"
+
     def save(self, *args, **kwargs):
         self.slug = self.username
         super().save(*args, **kwargs)

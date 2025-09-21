@@ -39,7 +39,7 @@
                 Delete account:
                 <form method="post" style="display: inline;">
                     {% csrf_token %}
-                    <a class="nl-2" href="{% url 'user-delete' request.user.client.slug %}">{{ request.user }}</a>
+                    <a class="nl-2" href="{% url 'user-delete' request.user.id %}">{{ request.user }}</a>
                 </form>
             </small>
         </div>

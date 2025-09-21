@@ -120,7 +120,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Your profile is updated successfully")
-                return redirect("user-profile")
+                return redirect("user-profile", request.user.client.slug)
         else:
             form = UpdateClientForm()
         return render(request, "users/update.html", {"form": form})

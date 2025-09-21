@@ -49,75 +49,64 @@
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Account pages</h6>
         </li>
-
-        {% if request.user.is_authenticated %}
-          {% if request.user.employee %}
-            <!-- Linki dla pracowników -->
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "employee-update-profile" request.user.id%}>
-                <i class="material-symbols-rounded opacity-5">person</i>
-                <span class="nav-link-text ms-1">Profile</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "employee-update-profile" request.user.id %}>
-                  <i class="material-symbols-rounded opacity-5">edit</i>
-                <span class="nav-link-text ms-1">Update Profile</span>
-              </a>
-            </li>
-            <!-- Dodaj tutaj inne linki specyficzne dla pracowników -->
+      {% if request.user.is_authenticated and not request.user.employee%}
+          <li class="nav-item">
+          <a class="nav-link text-dark" href={% url "user-profile" request.user.client.slug %}>
+            <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1 ">Profile</span>
+          </a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link text-dark" href={% url "user-update-profile" request.user.client.slug %}>
+              <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Update Profile</span>
+          </a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link text-dark" href={% url "create-transport" %}>
+               <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Create transport</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href={% url "cargo-list" request.user.id %}>
+            <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Your cargo list</span>
+          </a>
+        </li>
+          {% if request.user.is_authenticated and request.user.employee %}
+          <li class="nav-item">
+          <a class="nav-link text-dark" href={% url "employee-update-profile" request.user.id%}>
+            <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1 ">Profile</span>
+          </a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link text-dark" href={% url "employee-update-profile" request.user.id %}>
+              <i class="material-symbols-rounded opacity-5">person</i>
+            <span class="nav-link-text ms-1">Update Profile</span>
+          </a>
+          </li>
+        {%  endif %}
+          <li class="nav-item">
+          <form action="{% url 'user-logout' %}" method="POST" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-light">Log out</button>
+                    </form>
+        </li>
           {% else %}
-            <!-- Linki dla zwykłych użytkowników (klientów) -->
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "user-profile" request.user.client.slug %}>
-                <i class="material-symbols-rounded opacity-5">person</i>
-                <span class="nav-link-text ms-1">Profile</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "user-update-profile" request.user.client.slug %}>
-                  <i class="material-symbols-rounded opacity-5">edit</i>
-                <span class="nav-link-text ms-1">Update Profile</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "create-transport" %}>
-                 <i class="material-symbols-rounded opacity-5">local_shipping</i>
-                <span class="nav-link-text ms-1">Create transport</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "cargo-list" request.user.id %}>
-                <i class="material-symbols-rounded opacity-5">inventory_2</i>
-                <span class="nav-link-text ms-1">Your cargo list</span>
-              </a>
-            </li>
-          {% endif %}
-
-          <!-- Przycisk wylogowania dla wszystkich zalogowanych użytkowników -->
-          <li class="nav-item">
-            <form action="{% url 'user-logout' %}" method="POST" class="m-0">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-sm btn-light ms-3">Log out</button>
-            </form>
-          </li>
-
-        {% else %}
-          <!-- Linki dla niezalogowanych użytkowników -->
-          <li class="nav-item">
-            <a class="nav-link text-dark" href={% url "user-sign-in" %}>
-              <i class="material-symbols-rounded opacity-5">login</i>
-              <span class="nav-link-text ms-1">Sign In</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark " href={% url "user-sign-up" %}>
-              <i class="material-symbols-rounded opacity-5">assignment</i>
-              <span class="nav-link-text ms-1">Sign Up</span>
-            </a>
-          </li>
-        {% endif %}
-
+        <li class="nav-item">
+          <a class="nav-link text-dark" href={% url "user-sign-in" %}>
+            <i class="material-symbols-rounded opacity-5">login</i>
+            <span class="nav-link-text ms-1">Sign In</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark " href={% url "user-sign-up" %}>
+            <i class="material-symbols-rounded opacity-5 ">assignment</i>
+            <span class="nav-link-text ms-1 ">Sign Up</span>
+          </a>
+        </li>
       </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
@@ -126,8 +115,8 @@
         <a class="btn bg-gradient-dark w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
       </div>
     </div>
-</aside>
-
+{% endif %}
+  </aside>
 <div class="main-content position-relative max-height-vh-100 h-100">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
