@@ -116,13 +116,14 @@ class Employee(CustomUser):
 class EmployeeStatus(models.Model):
     """'EmployeeStatus model' keep track is employee available how many annual leave days are left or are they on sick leaves or transportin something now"""
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    on_route = models.BooleanField(default=False)
+    on_route = models.BooleanField(default=False, help_text="Working on current task")
     annual_leave_days_total = models.PositiveIntegerField(default=26, help_text="Number of annual leave days")
     annual_leave_days_used = models.PositiveIntegerField(default=0, help_text="Number of annual leave days used")
+    annual_leave_period = models.CharField(default='10/06/26-24/06/26', help_text='Period of annual leave mark like 10/06/26-24/06/26')
     presence_status = models.BooleanField(default=True, help_text='Is employee available at given date')
-    absence_days = models.PositiveIntegerField(default=0, help_text="Number of absence days")
-    sick_leaves_days = models.PositiveIntegerField(default=0, help_text="Number of sick leave days given by doctor")
-    sick_leaves_days_taken = models.PositiveIntegerField(default=0, help_text="Number of sick leave days")
+    absence_days = models.PositiveIntegerField(default=0, help_text="Number of absence days this year")
+    medical_leave_days = models.PositiveIntegerField(default=0, help_text="Number of working days in medical leave period given by doctor")
+    medical_leave_period = models.PositiveIntegerField(default=0, help_text="Period of medical leave days")
 
     class Meta:
         verbose_name_plural = "Employee Status"
