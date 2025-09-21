@@ -6,11 +6,11 @@ from django.utils import timezone
 
 class CustomUser(AbstractUser):
     """
-            'Person model' extending the base AbstractUser to include additional fields
+            'CustomUser model' extending the base AbstractUser to include additional fields
             specific to the application. This includes user-specific information and secondary contact details.
         """
-    email = models.EmailField(max_length=50, unique=True, verbose_name="Email")
-    phone_number = models.CharField(max_length=11, verbose_name="Phone Number")
+    email = models.EmailField(max_length=50, unique=True, verbose_name="Email", help_text="Primary contact email use to create user account")
+    phone_number = models.CharField(max_length=11, verbose_name="Phone Number", help_text="Contact phone number")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
@@ -36,7 +36,7 @@ class Client(CustomUser):
         null=True,
         blank=True,
         verbose_name="Billing Address",
-        help_text="Billing address",
+        help_text="Billing address ",
     )
     postal_code = models.CharField(
         max_length=10, verbose_name="Postal Code", default="32-856"
@@ -73,9 +73,9 @@ class Employee(CustomUser):
         The Employee model extends 'Person model' and stores info are they drivers assigned to transport departments or office employees.
         Keep payroll account.
     """
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    driver = models.BooleanField(default=False)
-    driver_semi = models.BooleanField(default=False)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, help_text="Office or Garage in which employee will work")
+    driver = models.BooleanField(default=False, help_text="Driver License Category 'C'")
+    driver_semi = models.BooleanField(default=False, help_text="Driver License Category 'CE")
 
     def __str__(self) -> str:
         return (f""
@@ -114,12 +114,12 @@ class Employee(CustomUser):
 
 
 class EmployeeStatus(models.Model):
-    """'EmployeeStatus model' keep track is employee avaible how many annual leave days are left or are they on sick leaves or transportin something now"""
+    """'EmployeeStatus model' keep track is employee available how many annual leave days are left or are they on sick leaves or transportin something now"""
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     on_route = models.BooleanField(default=False)
     annual_leave_days_total = models.PositiveIntegerField(default=26, help_text="Number of annual leave days")
     annual_leave_days_used = models.PositiveIntegerField(default=0, help_text="Number of annual leave days used")
-    absence_status = models.BooleanField(default=False)
+    presence_status = models.BooleanField(default=True, help_text='Is employee available at given date')
     absence_days = models.PositiveIntegerField(default=0, help_text="Number of absence days")
     sick_leaves_days = models.PositiveIntegerField(default=0, help_text="Number of sick leave days given by doctor")
     sick_leaves_days_taken = models.PositiveIntegerField(default=0, help_text="Number of sick leave days")
