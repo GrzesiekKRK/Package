@@ -18,8 +18,9 @@ def generate_period() -> str:
 
     return f"{start_date.strftime('%d/%m/%y')}-{end_date.strftime('%d/%m/%y')}"
 
+
 #TODO Change password setter to 'defaultpassword'
-class CustomUserFactory(DjangoModelFactory):
+class ClientFactory(DjangoModelFactory):
     class Meta:
         model = Client
         django_get_or_create = ('username',)
