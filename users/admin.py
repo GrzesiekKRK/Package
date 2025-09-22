@@ -20,6 +20,8 @@ class ClientAdmin(admin.ModelAdmin):
 
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ["address"]
+    search_fields = ["type", "address"]
+    ordering = ["type"]
     list_per_page = 25
 
 
@@ -39,16 +41,19 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 class EmployeeStatusAdmin(admin.ModelAdmin):
     list_display = [
-                    "on_route",
+                    "task_in_progress",
                     "annual_leave_days_total",
                     "annual_leave_days_used",
                     "presence_status",
                     "absence_days",
-                    "annual_leave_period",
-                    "medical_leave_period",
-                    "medical_leave_days"
+                    "annual_leave_start",
+                    "annual_leave_end",
+                    "medical_leave_days",
+                    "medical_leave_start",
+                    "medical_leave_end",
+                    "years_of_work",
                     ]
-    search_fields = ["on_route",  "annual_leave_days_used", "presence_status", "annual_leave_period", "absence_days", "medical_leave_period", "medical_leave_days",]
+    search_fields = ["task_in_progress",  "annual_leave_days_used", "presence_status", "annual_leave_start", "annual_leave_end",  "absence_days", "medical_leave_start", "medical_leave_days", "medical_leave_end",]
     ordering = ["presence_status"]
     list_per_page = 25
 

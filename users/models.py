@@ -113,17 +113,31 @@ class Employee(CustomUser):
         )
 
 
+#TODO daty okresu nieobecności
+#TODO Forma
 class EmployeeStatus(models.Model):
     """'EmployeeStatus model' keep track is employee available how many annual leave days are left or are they on medical leaves or transportin something now"""
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    on_route = models.BooleanField(default=False, help_text="Working on current task")
-    annual_leave_days_total = models.PositiveIntegerField(default=26, help_text="Number of annual leave days")
+    task_in_progress = models.BooleanField(default=False, help_text="Working on current task")
+    annual_leave_days_total = models.PositiveIntegerField(null=True, default=20, help_text="Number of annual leave days")
     annual_leave_days_used = models.PositiveIntegerField(default=0, help_text="Number of annual leave days used")
-    annual_leave_period = models.CharField(null=True, max_length=20, help_text='Period of annual leave mark like 10/06/26-24/06/26')
+    annual_leave_start = models.DateTimeField(null=True, blank=True, help_text="Start date of annual leave period")
+    annual_leave_end = models.DateTimeField(null=True, blank=True, help_text="End date of annual leave period")
     presence_status = models.BooleanField(default=True, help_text='Is employee available at given date')
     absence_days = models.PositiveIntegerField(default=0, help_text="Number of absence days this year")
     medical_leave_days = models.PositiveIntegerField(default=0, help_text="Number of working days in medical leave period given by doctor")
-    medical_leave_period = models.CharField(null=True, max_length=20, help_text="Period of medical leave days")
+    medical_leave_start = models.CharField(null=True, max_length=20, help_text="Period of medical leave start date")
+    medical_leave_end = models.CharField(null=True, max_length=20, help_text="Period of medical leave end date")
+    years_of_work = models.PositiveIntegerField(default=0, help_text="Number of years of work for annual leave counting")
 
     class Meta:
         verbose_name_plural = "Employee Status"
+
+    def annual_leave_days_count(self) -> None:
+        """Count leaves days base on years of work"""
+
+        years = self.years_of_work
+        if years < 10:
+            self.annual_leave_days_total = 20
+        else:
+            self.annual_leave_days_total = 26

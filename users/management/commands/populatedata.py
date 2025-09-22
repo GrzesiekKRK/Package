@@ -1,20 +1,33 @@
 from django.core.management.base import BaseCommand
 
 from users.factories import ClientFactory, DepartmentFactory, EmployeeFactory, EmployeeStatusFactory
-from users.models import Client, Employee, EmployeeStatus
+from users.consts import TRANSPORT
 
 
 class Command(BaseCommand):
-
+    """Create 50 clients, 5 departments and 5 employees par department"""
     def handle(self, *args, **options) -> None:
-        clients = self.clients_factories()
+        self.clients_factories()
+        departments = self.departments_factories()
+        self.employees_factories(departments)
 
     @staticmethod
     def clients_factories():
-        clients = ClientFactory.create_batch(50,)
-        return clients
+        """Create 50 clients"""
+        ClientFactory.create_batch(50,)
+        ClientFactory.create(username='ad', is_staff=True, is_superuser=True)
 
     @staticmethod
-    def employee_factories():
-        employees = EmployeeFactory.create_batch(50)
-        return employees
+    def departments_factories():
+        """Create 5 departments"""
+        departments = DepartmentFactory.create_batch(5,)
+        return departments
+
+    @staticmethod
+    def employees_factories(departments):
+        """Create 5 employees par department"""
+        for department in departments:
+            if department.type == TRANSPORT:
+                EmployeeFactory.create_batch(5, department=department, driver=True, driver_semi=True)
+
+            EmployeeFactory.create_batch(5, department=department)
