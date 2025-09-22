@@ -42,13 +42,14 @@ class EmployeeStatusAdmin(admin.ModelAdmin):
                     "on_route",
                     "annual_leave_days_total",
                     "annual_leave_days_used",
-                    "absence_status",
+                    "presence_status",
                     "absence_days",
-                    "sick_leaves_days_taken",
-                    "sick_leaves_days"
+                    "annual_leave_period",
+                    "medical_leave_period",
+                    "medical_leave_days"
                     ]
-    search_fields = ["on_route",  "annual_leave_days_used", "absence_status", "absence_days", "sick_leaves_days_taken", "sick_leaves_days",]
-    ordering = ["absence_status"]
+    search_fields = ["on_route",  "annual_leave_days_used", "presence_status", "annual_leave_period", "absence_days", "medical_leave_period", "medical_leave_days",]
+    ordering = ["presence_status"]
     list_per_page = 25
 
 
