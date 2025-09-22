@@ -50,29 +50,11 @@ class CreateTransport(LoginRequiredMixin, CreateView):
                 #FORMA dalej
                 form_for_calculation = transport_form
                 cargo_for_calculation = cargo_dimension_form
-                ic(user)
+
                 cargo_status = TransportStatus.objects.create(user=user)
                 OrderNotification.client_notification(transport_status=cargo_status, user=user)
                 OrderNotification.company_notification(transport_status=cargo_status, cargo_dimension=cargo_for_calculation, transport=form_for_calculation, user=user)
                 return redirect("notification")
-
-                # OrderNotification.client_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user,
-                #                                       cargo_status=cargo_status)
-                # OrderNotification.company_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user,
-                #                                        cargo_status=cargo_status)
-                # transport = transport_form.save(commit=False)
-                # transport.cargo_status = cargo_status
-                # transport.save()
-
-                # cargo_dimension = cargo_dimension_form.save(commit=False)
-                # cargo_dimension.transport = transport
-                # cargo_dimension.save()
-
-                # OrderNotification.client_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user, cargo_status=cargo_status)
-                #
-                # OrderNotification.company_notification(cargo_dimension=cargo_dimension, cargo=cargo, user=user, cargo_status=cargo_status)
-                #
-                # return render(request, "cargos/cargo_detail.html", {"cargo": cargo})
 
         context = {
             "cargo_form": transport_form,

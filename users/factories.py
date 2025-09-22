@@ -53,6 +53,7 @@ class EmployeeFactory(DjangoModelFactory):
     class Meta:
         model = Employee
 
+    password = factory.PostGenerationMethodCall('set_password', 'ad')
     department = factory.SubFactory(DepartmentFactory)
 
 
