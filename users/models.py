@@ -60,7 +60,7 @@ class Department(models.Model):
         (departments.TRANSPORT, "Transport"),
 
     )
-    type = models.PositiveSmallIntegerField(choices=DEPARTMENTS_CHOICES, default=departments.OFFICE)
+    type = models.PositiveSmallIntegerField(choices=DEPARTMENTS_CHOICES, default=departments.TRANSPORT)
     address = models.CharField(max_length=100, unique=True, verbose_name="Building Address")
 
     def __str__(self) -> str:

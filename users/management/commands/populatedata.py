@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 
+from users.models import Department
 from users.factories import ClientFactory, DepartmentFactory, EmployeeFactory, EmployeeStatusFactory
 from users.consts import TRANSPORT
 
@@ -20,7 +21,9 @@ class Command(BaseCommand):
     @staticmethod
     def departments_factories():
         """Create 5 departments"""
-        departments = DepartmentFactory.create_batch(5,)
+        DepartmentFactory.create(address='Office Kraków', type=1)
+        DepartmentFactory.create_batch(5, type=2)
+        departments = Department.objects.all()
         return departments
 
     @staticmethod

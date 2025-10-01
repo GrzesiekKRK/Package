@@ -182,15 +182,9 @@ class OrderNotification:
         return user_notification
 
     @staticmethod
-    def company_notification(transport_status: TransportStatus, transport: TransportForm, cargo_dimension: CargoDimensionForm, user: CustomUser) -> Notification:
+    def company_notification(transport_status: TransportStatus, transport: Transport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:
         """
-        Creates and sends a notification to the vendor when their products are sold.
-
-        Args:
-            order (Order): The order instance for which the notification is created.
-
-        Returns:
-            Notification: The created notification instance sent to the vendor.
+        Creates and sends a notification to the company employee when transport is demanded.
         """
         FIRST_DEPARTMENT = (1, 'Kraków')
         department, created = Department.objects.get_or_create(id=FIRST_DEPARTMENT[0], address=FIRST_DEPARTMENT[1])

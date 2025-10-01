@@ -30,7 +30,7 @@ class Transport(models.Model):
         The CargoTransport model represents customer cargo pickup and delivery point and price.
         Working in conjunction with OrderDimension for better performance
     """
-    driver = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     cargo_status = models.ForeignKey(TransportStatus, on_delete=models.CASCADE)
     total_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Distance", default=1)
     total_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Duration", default=1)

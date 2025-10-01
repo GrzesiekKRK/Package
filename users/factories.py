@@ -36,7 +36,7 @@ class DepartmentFactory(DjangoModelFactory):
     class Meta:
         model = Department
 
-    type = factory.LazyFunction(lambda: random.choice(DEPARTMENTS))
+    type = int
     address = factory.Faker("address")
 
 
@@ -56,6 +56,7 @@ class EmployeeFactory(DjangoModelFactory):
     department = factory.SubFactory(DepartmentFactory)
     driver = False
     driver_semi = False
+
 
 class EmployeeStatusFactory(DjangoModelFactory):
     class Meta:

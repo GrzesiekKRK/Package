@@ -35,25 +35,11 @@ class CreateTransport(LoginRequiredMixin, CreateView):
             cargo_dimension_form = CargoDimensionForm(request.POST)
 
             if transport_form.is_valid() and cargo_dimension_form.is_valid():
-                #DICT
-                data = transport_form.cleaned_data
-                data_for_calculation = {
-                                        'collection_address': data['collection_address'],
-                                        'delivery_address': data['delivery_address'],
-                                        'notes': data['notes'],
-                                        'price': data['price'],
-                                        'total_distance': data['total_distance'],
-                                        'total_duration': data['total_duration'],
-                                        'transport_distance': data['transport_distance'],
-                                        'transport_duration': data['transport_duration']
-                                        }
-                #FORMA dalej
-                form_for_calculation = transport_form
-                cargo_for_calculation = cargo_dimension_form
-
-                cargo_status = TransportStatus.objects.create(user=user)
-                OrderNotification.client_notification(transport_status=cargo_status, user=user)
-                OrderNotification.company_notification(transport_status=cargo_status, cargo_dimension=cargo_for_calculation, transport=form_for_calculation, user=user)
+                transport = transport_form.save()
+                cargo_dimension = cargo_dimension_form.save()
+                transport_status = TransportStatus.objects.create(user=user)
+                OrderNotification.client_notification(transport_status=transport_status, user=user)
+                OrderNotification.company_notification(transport_status=transport_status, cargo_dimension=cargo_dimension, transport=transport, user=user)
                 return redirect("notification")
 
         context = {
