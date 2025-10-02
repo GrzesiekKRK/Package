@@ -28,6 +28,7 @@ INSTALLED_EXTENSIONS = [
     "schedules",
     "users",
     "vehicles",
+    "quotations",
 ]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS

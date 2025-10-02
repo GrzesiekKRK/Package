@@ -60,7 +60,8 @@ class AnnualLeave(models.Model):
         verbose_name_plural = "Annual Leaves"
         ordering = ['-start_date']
 
-#TODO tylko dla offfice wgląd
+
+#TODO tylko dla office wgląd
 class SickLeave(models.Model):
     """Model for medical sick leave"""
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='sick_leaves')
