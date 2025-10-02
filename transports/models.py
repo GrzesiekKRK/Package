@@ -70,7 +70,7 @@ class Transport(models.Model):
 
 class CargoDimension(models.Model):
     """
-    The CargoDimension model represents cargo dimensions it weights.
+    The CargoDimension model represents cargo dimensions it weights, width, length, height.
      With its help will decide what type of vehicle will do CargoTransport.
     """
     transport = models.OneToOneField(Transport, on_delete=models.CASCADE, verbose_name="Cargo", related_name='dimensions')
