@@ -4,6 +4,7 @@ from transports.models import Transport
 from vehicles.models import Vehicle
 
 
+#TODO Updateview do wybierania pojazdu i po update przeliczania ceny
 class Quotation(models.Model):
     """Represents a quotation."""
     transport = models.ForeignKey(Transport, on_delete=models.CASCADE)
@@ -35,13 +36,17 @@ class Quotation(models.Model):
         return voyage_cost
 
     def calculate_total_price(self):
-        """Add voyage cost and minimal profit. Rounded to 2 decimal places."""
+        """Add voyage cost and minimal profit. Multiply depending on vehicle typ. Rounded to 2 decimal places."""
         voyage_cost = self.voyage_cost()
 
         vehicle_type = self.vehicle.type
         if vehicle_type == "Solo":
-            total_price = voyage_cost + self.minimal_profit
+            price_solo = voyage_cost + self.minimal_profit
+            total_price = round(price_solo, 2)
+        elif vehicle_type == "Tractor":
+            price_tractor = (voyage_cost + self.minimal_profit) * Decimal(0.80)
+            total_price = round(price_tractor, 2)
         else:
-            price_semi = voyage_cost + self.minimal_profit
-            total_price = round(price_semi * Decimal(1.50), 2)
+            price_semi = (voyage_cost + self.minimal_profit) * Decimal(1.50)
+            total_price = round(price_semi, 2)
         return total_price
