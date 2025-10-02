@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from transport.models import TransportStatus, Transport, CargoDimension
+from transports.models import TransportStatus, Transport, CargoDimension
 
 
 class TransportStatusAdmin(admin.ModelAdmin):

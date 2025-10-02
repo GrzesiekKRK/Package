@@ -1,5 +1,5 @@
 from django.urls import path
-from transport.views import CreateTransport, TransportDetailView, TransportStatusListView
+from transports.views import CreateTransport, TransportDetailView, TransportStatusListView
 
 urlpatterns = [
                 path("cargos/create/", CreateTransport.creation_manager, name="create-transport"),

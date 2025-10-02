@@ -5,8 +5,8 @@ from django.contrib.auth.views import TemplateView, LoginView
 from django.views.generic.edit import DeleteView
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
 
-from transport.forms import TransportForm, CargoDimensionForm
-from transport.models import Transport, TransportStatus, CargoDimension
+from transports.forms import TransportForm, CargoDimensionForm
+from transports.models import Transport, TransportStatus, CargoDimension
 
 from notifications.views import OrderNotification
 from icecream import ic

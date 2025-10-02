@@ -6,10 +6,10 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DeleteView, TemplateView
 
-from transport.models import TransportStatus, Transport, CargoDimension
+from transports.models import TransportStatus, Transport, CargoDimension
 from notifications.models import Notification
 from users.models import CustomUser, Employee, Department
-from transport.forms import TransportForm, CargoDimensionForm
+from transports.forms import TransportForm, CargoDimensionForm
 from icecream import ic
 
 

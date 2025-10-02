@@ -1,5 +1,5 @@
 from django.db import models
-from transport import consts as status
+from transports import consts as status
 from users.models import Employee, CustomUser
 
 

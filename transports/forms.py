@@ -1,5 +1,5 @@
 from django import forms
-from transport.models import Transport, CargoDimension
+from transports.models import Transport, CargoDimension
 
 
 class TransportForm(forms.ModelForm):
