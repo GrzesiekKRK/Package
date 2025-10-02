@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from users.models import Department, Employee
 from vehicles.models import Vehicle
-from transport.models import Transport, TransportStatus
+from transports.models import Transport, TransportStatus
 
 
 #TODO Połączyć dyspozycjyność, Spedycja

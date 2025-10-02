@@ -9,27 +9,27 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "djangoql",
-    "debug_toolbar",
-    "django_extensions",
-    "crispy_forms",
-    "crispy_bootstrap4",
-]
+                    "django.contrib.admin",
+                    "django.contrib.auth",
+                    "django.contrib.contenttypes",
+                    "django.contrib.sessions",
+                    "django.contrib.messages",
+                    "django.contrib.staticfiles",
+                    "djangoql",
+                    "debug_toolbar",
+                    "django_extensions",
+                    "crispy_forms",
+                    "crispy_bootstrap4",
+                ]
 
 INSTALLED_EXTENSIONS = [
-    "transport",
-    "notifications",
-    "schedules",
-    "users",
-    "vehicles",
-    "quotations",
-]
+                        "transports",
+                        "notifications",
+                        "schedules",
+                        "users",
+                        "vehicles",
+                        "quotations",
+                    ]
 
 INSTALLED_APPS += INSTALLED_EXTENSIONS
 
