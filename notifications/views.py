@@ -30,7 +30,8 @@ class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
             dict[str, Any]: A dictionary of context data for rendering the template.
                              Contains the list of notifications under the key 'notifications'.
         """
-        notification = Notification.objects.filter(user=self.request.user.id).order_by(
+        user = self.request.user.id
+        notification = Notification.objects.filter(user=user).order_by(
             "is_read"
         )
         paginator = Paginator(notification, 12)
@@ -186,7 +187,7 @@ class OrderNotification:
         """
         Creates and sends a notification to the company employee when transport is demanded.
         """
-        FIRST_DEPARTMENT = (1, 'Kraków')
+        FIRST_DEPARTMENT = (99, 'Kraków')
         department, created = Department.objects.get_or_create(id=FIRST_DEPARTMENT[0], address=FIRST_DEPARTMENT[1])
         office_employee, created = Employee.objects.get_or_create(
             department=department,
@@ -205,20 +206,17 @@ class OrderNotification:
             f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
             f"{transport_status.id}"
-            f" {transport['total_distance']}"
-            f"{transport['transport_distance']}"
-            f"{transport['price']}"
-            f"{transport['collection_address']}"
-            f"{transport['delivery_address']}"
-            f"{transport['notes']}"
-            f" {cargo_dimension['length']}"
-            f"{cargo_dimension['width']}"
-            f"{cargo_dimension['height']}"
+            f" {transport.total_distance}"
+            f"{transport.transport_distance}"
+            f"{transport.price}"
+            f"{transport.collection_address}"
+            f"{transport.delivery_address}"
+            f"{transport.notes}"
+            f" {cargo_dimension.length}"
+            f"{cargo_dimension.width}"
+            f"{cargo_dimension.height}"
         )
-        ic(user)
-        ic(transport_status.id)
-        ic(transport)
-        ic(cargo_dimension)
+
         company_notification = Notification(user=office_employee, title=office_title, body=office_body)
         company_notification.save()
         return company_notification

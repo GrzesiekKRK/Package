@@ -25,7 +25,52 @@ class CreateTransport(LoginRequiredMixin, CreateView):
     template_name = "transport/create-transport.html"
 
     @staticmethod
-    def create_transport_status(request, *args, **kwargs):
+    def create_transport(transport_form: TransportForm, transport_status: TransportStatus) -> Transport:
+        transport_data = transport_form.cleaned_data
+        collection_address = transport_data['collection_address']
+        delivery_address = transport_data['delivery_address']
+        notes = transport_data['notes']
+        price = transport_data['price']
+        total_distance = transport_data['total_distance']
+        total_duration = transport_data['total_duration']
+        transport_distance = transport_data['transport_distance']
+        transport_duration = transport_data['transport_duration']
+        transport = Transport(transport_status=transport_status,
+                              collection_address=collection_address,
+                              delivery_address=delivery_address,
+                              notes=notes,
+                              price=price,
+                              total_distance=total_distance,
+                              total_duration=total_duration,
+                              transport_distance=transport_distance,
+                              transport_duration=transport_duration)
+        transport.save()
+        return transport
+
+    @staticmethod
+    def create_cargo_dimension(cargo_dimension_form: CargoDimensionForm, transport: Transport) -> CargoDimension:
+        cargo_dimension_data = cargo_dimension_form.cleaned_data
+        weight = cargo_dimension_data['weight']
+        width = cargo_dimension_data['width']
+        height = cargo_dimension_data['height']
+        length = cargo_dimension_data['length']
+        cargo_dimension = CargoDimension(
+                                        transport=transport,
+                                        weight=weight,
+                                        width=width,
+                                        height=height,
+                                        length=length
+                                        )
+        cargo_dimension.save()
+        return cargo_dimension
+
+    @staticmethod
+    def create_transport_status(user: CustomUser) -> TransportStatus:
+        transport_status = TransportStatus.objects.create(user=user)
+        return transport_status
+
+    @staticmethod
+    def creation_manager(request, *args, **kwargs):
         user = CustomUser.objects.get(id=request.user.id)
         transport_form = TransportForm()
         cargo_dimension_form = CargoDimensionForm()
@@ -33,13 +78,16 @@ class CreateTransport(LoginRequiredMixin, CreateView):
         if request.method == "POST":
             transport_form = TransportForm(request.POST)
             cargo_dimension_form = CargoDimensionForm(request.POST)
-
             if transport_form.is_valid() and cargo_dimension_form.is_valid():
-                transport = transport_form.save()
-                cargo_dimension = cargo_dimension_form.save()
-                transport_status = TransportStatus.objects.create(user=user)
+                transport_status = CreateTransport.create_transport_status(user)
+                transport = CreateTransport.create_transport(transport_form, transport_status)
+                cargo_dimension = CreateTransport.create_cargo_dimension(cargo_dimension_form, transport)
                 OrderNotification.client_notification(transport_status=transport_status, user=user)
-                OrderNotification.company_notification(transport_status=transport_status, cargo_dimension=cargo_dimension, transport=transport, user=user)
+                OrderNotification.company_notification(
+                                                        transport_status=transport_status,
+                                                        cargo_dimension=cargo_dimension,
+                                                        transport=transport,
+                                                        user=user)
                 return redirect("notification")
 
         context = {
@@ -73,3 +121,19 @@ class TransportStatusListView(LoginRequiredMixin, ListView):
 class TransportDetailView(LoginRequiredMixin, DetailView):
     model = Transport
     template_name = "transport/transport_detail.html"
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        """
+        Method that generates the context data to be passed to the template.
+
+        **kwargs: Additional arguments passed to the method (e.g., URL variables).
+
+        Returns:
+            dict[str, Any]: A dictionary with data that will be used in the template.
+        """
+        context = super().get_context_data(**kwargs)
+        ic(**kwargs)
+        status = Transport.objects.filter(user=self.request.user).select_related('transport_status', 'driver', 'dimensions')
+        context['transports'] = status
+
+        return context

@@ -31,7 +31,7 @@ class Transport(models.Model):
         Working in conjunction with OrderDimension for better performance
     """
     driver = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
-    cargo_status = models.ForeignKey(TransportStatus, on_delete=models.CASCADE)
+    transport_status = models.ForeignKey(TransportStatus, on_delete=models.CASCADE)
     total_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Distance", default=1)
     total_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Duration", default=1)
     transport_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Distance", default=1)
@@ -80,5 +80,5 @@ class CargoDimension(models.Model):
     weight = models.FloatField(help_text='Gross Vehicle Weight in Kilograms', verbose_name="Weight", default=1)
 
     def __str__(self):
-        return f"Cargo {self.cargo.id} : Weight:{self.weight}, Length:{self.length}, Width:{self.width}, Height:{self.height}"
+        return f"Cargo {self.transport.id} : Weight:{self.weight}, Length:{self.length}, Width:{self.width}, Height:{self.height}"
 
