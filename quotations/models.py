@@ -1,11 +1,13 @@
 from django.db import models
-
+from decimal import Decimal
 from transports.models import Transport
+from vehicles.models import Vehicle
 
 
 class Quotation(models.Model):
     """Represents a quotation."""
     transport = models.ForeignKey(Transport, on_delete=models.CASCADE)
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     kilometer_rate = models.DecimalField(help_text='Kilograms', decimal_places=2, max_digits=6, verbose_name="Cost", default=4.2)
     toll_fee = models.DecimalField(help_text='Toll Fee', decimal_places=2, max_digits=6,  verbose_name="Toll Fee", default=0)
     fuel_consumption = models.DecimalField(help_text='Fuel rate for 100 kilometers ', decimal_places=2, max_digits=6, default=16.0)
@@ -35,5 +37,11 @@ class Quotation(models.Model):
     def calculate_total_price(self):
         """Add voyage cost and minimal profit. Rounded to 2 decimal places."""
         voyage_cost = self.voyage_cost()
-        total_price = voyage_cost + self.minimal_profit
+
+        vehicle_type = self.vehicle.type
+        if vehicle_type == "Solo":
+            total_price = voyage_cost + self.minimal_profit
+        else:
+            price_semi = voyage_cost + self.minimal_profit
+            total_price = round(price_semi * Decimal(1.50), 2)
         return total_price
