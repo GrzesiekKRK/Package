@@ -53,7 +53,6 @@ class UserSignInView(LoginView):
             HttpResponse: The response after processing the login request.
         """
         form = LoginForm(request.POST)
-        ic(form)
         if form.is_valid():
             username, password = (
                 form.cleaned_data["username"],

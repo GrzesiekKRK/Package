@@ -30,7 +30,7 @@ class Vehicle(models.Model):
         if self.type == 'TRUCK' and self.connected_to is not None:
             raise ValidationError("Only Tractor can attach Semi-trailer")
 
-        if self.type != 'TRAILER' and self.connected_to is not None:
+        if self.type != 'Semi-trailer' and self.connected_to is not None:
             raise ValidationError("Semi-trailer can only be attach to Tractor ")
 
 

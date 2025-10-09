@@ -2,6 +2,12 @@ from django.db import models
 from decimal import Decimal
 from transports.models import Transport
 from vehicles.models import Vehicle
+from vehicles import consts as vehicle_type
+
+
+class BasePriceModificator(models.Model):
+    vehicle_type = models.CharField(max_length=30, choices=vehicle_type.TRUCK_TYPE_CHOICES)
+    value = models.DecimalField(decimal_places=2, max_digits=6, help_text='Value of modificator for base price tag of solo-truck transport.')
 
 
 #TODO Updateview do wybierania pojazdu i po update przeliczania ceny
@@ -38,15 +44,11 @@ class Quotation(models.Model):
     def calculate_total_price(self):
         """Add voyage cost and minimal profit. Multiply depending on vehicle typ. Rounded to 2 decimal places."""
         voyage_cost = self.voyage_cost()
-
-        vehicle_type = self.vehicle.type
-        if vehicle_type == "Solo":
-            price_solo = voyage_cost + self.minimal_profit
-            total_price = round(price_solo, 2)
-        elif vehicle_type == "Tractor":
-            price_tractor = (voyage_cost + self.minimal_profit) * Decimal(0.80)
-            total_price = round(price_tractor, 2)
-        else:
-            price_semi = (voyage_cost + self.minimal_profit) * Decimal(1.50)
-            total_price = round(price_semi, 2)
+        truck_type = self.vehicle.type
+        modificator = BasePriceModificator.objects.get(vehicle_type=truck_type)
+        price = (voyage_cost + self.minimal_profit) * modificator.value
+        total_price = round(price, 2)
         return total_price
+
+
+

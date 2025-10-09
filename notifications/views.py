@@ -157,7 +157,7 @@ class NotificationDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
 
-class OrderNotification:
+class CreateNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
