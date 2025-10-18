@@ -15,11 +15,10 @@ class CreateVehicleForm(forms.ModelForm):
         )
 
 
-class CreateVehicleDimensionForm(forms.Form):
+class VehicleDimensionForm(forms.ModelForm):
     class Meta:
         model = VehicleDimension
         fields = (
-            "vehicle",
             "length",
             "width",
             "height",

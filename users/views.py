@@ -12,6 +12,8 @@ from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from users.models import CustomUser, Client, Employee, Department
 from users.forms import RegisterClientForm, UpdateClientForm, LoginForm, RegisterEmployeeForm, UpdateEmployeeForm
+from django.utils.decorators import method_decorator
+from users.decorator import employee_permission
 from icecream import ic
 
 
@@ -173,6 +175,7 @@ class EmployeeSignUpView(CreateView):
     success_url = reverse_lazy("user-sign-in")
 
 
+@method_decorator(employee_permission(), name="dispatch")
 class EmployeeProfileView(LoginRequiredMixin, DetailView):
     model = Employee
     template_name = "users/profile.html"
@@ -192,6 +195,7 @@ class EmployeeProfileView(LoginRequiredMixin, DetailView):
 
 
 # Dane osobowe
+@method_decorator(employee_permission(), name="dispatch")
 class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
     model = Employee
     template_name = "users/update.html"

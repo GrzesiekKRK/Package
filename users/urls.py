@@ -1,7 +1,8 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from users.views import DashboardView, UserSignInView, UserSignUpView, UserUpdateView, UserProfileView, UserDeleteView, EmployeeSignUpView, EmployeeUpdateView
+from users.views import (DashboardView, UserSignInView, UserSignUpView, UserUpdateView,
+                         UserProfileView, UserDeleteView, EmployeeSignUpView, EmployeeUpdateView)
 
 urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
