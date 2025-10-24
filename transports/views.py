@@ -93,7 +93,7 @@ class CreateTransport(LoginRequiredMixin, CreateView):
     @staticmethod
     def notifications(transport_status: TransportStatus, cargo_dimension: CargoDimension, transport: Transport, user: CustomUser) -> None:
         """Create Notifications """
-        CreateNotification.client_notification(transport_status=transport_status, user=user)
+        CreateNotification.client_notification(transport_status=transport_status, user=user, transport=transport)
         CreateNotification.company_notification(
             transport_status=transport_status,
             cargo_dimension=cargo_dimension,
@@ -162,7 +162,6 @@ class TransportDetailView(LoginRequiredMixin, DetailView):
             dict[str, Any]: A dictionary with data that will be used in the template.
         """
         context = super().get_context_data(**kwargs)
-        ic(**kwargs)
         status = Transport.objects.filter(user=self.request.user).select_related('transport_status', 'driver', 'dimensions')
         context['transports'] = status
 

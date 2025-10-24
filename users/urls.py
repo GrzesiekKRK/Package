@@ -1,18 +1,18 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from users.views import (DashboardView, UserSignInView, UserSignUpView, UserUpdateView,
-                         UserProfileView, UserDeleteView, EmployeeSignUpView, EmployeeUpdateView)
+from users.views import (DashboardView, ClientSignInView, ClientSignUpView, ClientUpdateView,
+                         ClientProfileView, ClientDeleteView, EmployeeSignUpView, EmployeeUpdateView)
 
 urlpatterns = [
     path("", DashboardView.as_view(), name="dashboard"),
-    path("login/", UserSignInView.as_view(), name="user-sign-in"),
+    path("login/", ClientSignInView.as_view(), name="user-sign-in"),
     path("logout/", LogoutView.as_view(next_page="user-sign-in"), name="user-logout"),
-    path("sign-up/", UserSignUpView.as_view(), name="user-sign-up"),
-    path("update/<slug:slug>/", UserUpdateView.as_view(), name="user-update-profile"),
-    path("profile/<slug:slug>/", UserProfileView.as_view(), name="user-profile"),
+    path("sign-up/", ClientSignUpView.as_view(), name="user-sign-up"),
+    path("update/<slug:slug>/", ClientUpdateView.as_view(), name="user-update-profile"),
+    path("profile/<slug:slug>/", ClientProfileView.as_view(), name="user-profile"),
     path("logout/", LogoutView.as_view(next_page="user-sign-in"), name="user-logout"),
-    path("delete/<int:pk>/", UserDeleteView.as_view(), name="user-delete"),
+    path("delete/<int:pk>/", ClientDeleteView.as_view(), name="user-delete"),
     path("employee/sign-up/", EmployeeSignUpView.as_view(), name="employee-sign-up"),
     path("employee/update/<int:pk>", EmployeeUpdateView.as_view(), name="employee-update-profile"),
     path("tables/", DashboardView.as_view(), name="tables"),

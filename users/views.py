@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from users.models import CustomUser, Client, Employee, Department
 from users.forms import RegisterClientForm, UpdateClientForm, LoginForm, RegisterEmployeeForm, UpdateEmployeeForm
 from django.utils.decorators import method_decorator
-from users.decorator import employee_permission
+from users.permission import EmployeeRequiredMixin
 from icecream import ic
 
 
@@ -24,7 +24,7 @@ class DashboardView(TemplateView):
 #TODO link dla kont pracowniczych
 #TODO generator linków w sidebar pracownika biura
 #TODO widoki dla pracownika CRUD
-class UserSignUpView(CreateView):
+class ClientSignUpView(CreateView):
     """
         Handles the user signup functionality. After successfully registering, the user is redirected
         to the login page.
@@ -35,7 +35,7 @@ class UserSignUpView(CreateView):
     success_message = "Your profile was created successfully"
 
 
-class UserSignInView(LoginView):
+class ClientSignInView(LoginView):
     """
         Handles user login functionality. If login fails, an error message is shown.
     """
@@ -60,7 +60,6 @@ class UserSignInView(LoginView):
                 form.cleaned_data["username"],
                 form.cleaned_data["password"],
             )
-            ic(username, password)
             user = authenticate(request, username=username, password=password)
 
             if user:
@@ -70,7 +69,7 @@ class UserSignInView(LoginView):
         return render(request, "users/sign-in.html", {"form": form})
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     """
     Handles updating the user's profile information. Only authenticated users can update their
     profile.
@@ -89,8 +88,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         Returns:
             CustomUser: The current user's profile.
         """
-        user = CustomUser.objects.get(id=self.request.user.id)
-        return user
+        client = CustomUser.objects.get(id=self.request.user.id)
+        return client
 
     def get_success_url(self) -> HttpResponse:
         """
@@ -99,8 +98,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         Returns:
             HttpResponse: The response with the success URL.
         """
-        user = Client.objects.get(id=self.request.user.id)
-        return render(self.request, "users/update.html", {"user": user})
+        client = Client.objects.get(id=self.request.user.id)
+        return render(self.request, "users/update.html", {"user": client})
 
     def post(
         self, request: HttpRequest, *args, **kwargs
@@ -140,7 +139,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return render(self.request, "users/update.html", {"form": form})
 
 
-class UserProfileView(LoginRequiredMixin, DetailView):
+class ClientProfileView(LoginRequiredMixin, DetailView):
     template_name = "users/profile.html"
 
     def get_object(self, queryset: Optional[QuerySet[CustomUser]] = None) -> CustomUser:
@@ -153,11 +152,11 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         Returns:
             CustomUser: The current user's profile.
         """
-        user = Client.objects.get(id=self.request.user.id)
-        return user
+        client = Client.objects.get(id=self.request.user.id)
+        return client
 
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     """
     Handles user deletion. The user can delete their account, after which they are redirected
     to the login page.
@@ -175,8 +174,7 @@ class EmployeeSignUpView(CreateView):
     success_url = reverse_lazy("user-sign-in")
 
 
-@method_decorator(employee_permission(), name="dispatch")
-class EmployeeProfileView(LoginRequiredMixin, DetailView):
+class EmployeeProfileView(EmployeeRequiredMixin, DetailView):
     model = Employee
     template_name = "users/profile.html"
 
@@ -195,13 +193,13 @@ class EmployeeProfileView(LoginRequiredMixin, DetailView):
 
 
 # Dane osobowe
-@method_decorator(employee_permission(), name="dispatch")
-class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
+
+class EmployeeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Employee
     template_name = "users/update.html"
     form_class = UpdateEmployeeForm
 
 
 #Grafik urlopy bądź dni pracy/transporty forma kalendarza z linkami do transportów, połączone z możliwościa rozpoczęcia transportu
-class EmployeeSchedules(LoginRequiredMixin, DetailView):
+class EmployeeSchedules(EmployeeRequiredMixin, DetailView):
     model = Employee

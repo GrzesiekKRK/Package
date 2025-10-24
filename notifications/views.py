@@ -161,12 +161,14 @@ class CreateNotification:
     """Handles creating notifications related to orders, such as payment acceptance and vendor updates."""
 
     @staticmethod
-    def client_notification(transport_status: TransportStatus, user: CustomUser ) -> Notification:
+    def client_notification(transport_status: TransportStatus, user: CustomUser, transport: Transport ) -> Notification:
         """
         Creates and sends a notification to the buyer when their payment is accepted.
 
         Args:
-            order (Order): The order instance for which the notification is created.
+            transport_status (TransportStatus): The transport status of the buyer.
+            user (CustomUser): The user who created the notification.
+            transport (Transport): The transport of the buyer.
 
         Returns:
             Notification: The created notification instance sent to the buyer.
@@ -178,7 +180,7 @@ class CreateNotification:
                 f" <a href=\"http://127.0.0.1:8000/order/detail/{transport_status.id}\">"
                 f"<i class='fas fa-envelope me-2 text-secondary'>"
                 f"</i>Open notification</a>'")
-        user_notification = Notification(user=user, title=title, body=body)
+        user_notification = Notification(user=user, title=title, body=body, transport=transport)
         user_notification.save()
         return user_notification
 
@@ -206,7 +208,8 @@ class CreateNotification:
             f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
             f"{transport_status.id}"
-            f" {transport.total_distance}"
+            f"{transport.id}"
+            f"{transport.total_distance}"
             f"{transport.transport_distance}"
             f"{transport.price}"
             f"{transport.collection_address}"
@@ -217,6 +220,6 @@ class CreateNotification:
             f"{cargo_dimension.height}"
         )
 
-        company_notification = Notification(user=office_employee, title=office_title, body=office_body)
+        company_notification = Notification(user=office_employee, title=office_title, body=office_body, transport=transport)
         company_notification.save()
         return company_notification

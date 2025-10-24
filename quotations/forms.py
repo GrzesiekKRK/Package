@@ -6,6 +6,7 @@ class CreateQuotationForm(forms.ModelForm):
     class Meta:
         model = Quotation
         fields = [
+                    'transport',
                     'vehicle',
                     'kilometer_rate',
                     'toll_fee',

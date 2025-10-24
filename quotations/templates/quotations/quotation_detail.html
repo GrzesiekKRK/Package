@@ -1,0 +1,29 @@
+{% extends "package/pages/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <body>
+     <!-- Single Page Header start -->
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6" href={% url "dashboard" %}>Package</h1>
+    </div>
+    <!-- Single Page Header End -->
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="formFile" class="form-label"></label>
+                {{ cargo_form|crispy }}
+                {{ cargo_dimension_form|crispy }}
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </form>
+    </div>
+        </div>
+    </div>
+    <!-- Products End -->
+    </body>
+{% endblock content %}
