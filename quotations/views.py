@@ -9,6 +9,7 @@ from notifications.models import Notification
 from transports.models import Transport
 from icecream import ic
 
+
 #TODO Dokończyć wycene
 #TODO Dodać możliwość zrobienia kilku wycen
 #TODO Wysyłanie tej najdroższej jako pierwszej najtańszej jako druga
@@ -25,10 +26,21 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
         return render(request, 'quotations/create_quotation.html', context)
 
     def post(self, request, *args, **kwargs):
+        ic(kwargs)
         quotation_form = CreateQuotationForm(request.POST, prefix='quotation')
-
+        ic(quotation_form.errors)
         if quotation_form.is_valid():
+
             quotation = quotation_form.save(commit=False)
             return render(request, "quotation_detail.html", {'quotation': quotation})
 
-        return redirect('quotation-create')
+        return redirect('dashboard')
+
+
+class QuotationListView(EmployeeRequiredMixin, ListView):
+    model = Quotation
+    template_name = "quotations/quotation_list.html"
+
+
+class QuotationDetailView(EmployeeRequiredMixin, DetailView):
+    model = Quotation

@@ -21,7 +21,10 @@ class Quotation(models.Model):
     driver_rate = models.DecimalField(help_text='Driver rate per kilometer', decimal_places=2, max_digits=6, default=0.90)
     maintenance_rate = models.DecimalField(help_text='Truck maintenance cost per transport', decimal_places=2, max_digits=6, default=50)
     minimal_profit = models.IntegerField(help_text='Minimal profit for this transport', default=100)
-    total_price = models.DecimalField(help_text='Total price for this transport with profit', decimal_places=2, max_digits=6)
+    total_price = models.DecimalField(help_text='Total price for this transport with profit', decimal_places=2, max_digits=6, default=1100)
+
+    def __str__(self) -> str:
+        return f"Quotation for transport number {self.transport.id} with total price: {self.total_price}"
 
     def driver_cost(self):
         """Calculate driver cost by multiplying driver kilometer rate by total distance covered.Rounded to 2 decimal places."""
