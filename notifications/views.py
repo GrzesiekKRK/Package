@@ -9,7 +9,7 @@ from django.views.generic import DeleteView, TemplateView
 from transports.models import TransportStatus, Transport, CargoDimension
 from notifications.models import Notification
 from users.models import CustomUser, Employee, Department
-from transports.forms import TransportForm, CargoDimensionForm
+from quotations.models import Quotation
 from icecream import ic
 
 
@@ -175,14 +175,34 @@ class CreateNotification:
         """
         title = f"{transport_status.id} awaiting verification"
         body = (f"'Hi your transport demand will be check and evaluation."
-                f" Once done will send notification with price tag and possible dates if your date we are occcupices."
-                f" If you accept price confimet by paying with link in notification:"
-                f" <a href=\"http://127.0.0.1:8000/order/detail/{transport_status.id}\">"
-                f"<i class='fas fa-envelope me-2 text-secondary'>"
-                f"</i>Open notification</a>'")
+                f" Once done will send notification with price tag."
+                )
         user_notification = Notification(user=user, title=title, body=body)
         user_notification.save()
         return user_notification
+
+    #TODO link od payments
+    @staticmethod
+    def client_quotation_notification(user: CustomUser, quotation: Quotation) -> Notification:
+        """
+        Creates and sends a notification to the buyer when their payment is accepted.
+
+        Args:
+            user (CustomUser): The user who created the notification.
+            quotation (Quotation): The quotation is a price given to a client for service.
+
+        Returns:
+            Notification: The created notification instance sent to the buyer.
+        """
+        title = f"Quotation"
+        body = (f"'Hi {user.first_name} quotation is ready."
+                f"Price is {quotation.total_price} PLN."
+                f" If you accept price confimet by paying with link in notification:"
+                f" <a href=\"http://127.0.0.1:8000/order/detail/{quotation.id}\">"
+                )
+        client_notification = Notification(user=user, title=title, body=body)
+        client_notification.save()
+        return client_notification
 
     @staticmethod
     def company_notification(transport_status: TransportStatus, transport: Transport, cargo_dimension: CargoDimension, user: CustomUser) -> Notification:

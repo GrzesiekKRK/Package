@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView, DetailView, ListView, TemplateView
+from django.views.generic import UpdateView, DetailView, ListView, TemplateView
 from typing import Any
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -6,6 +6,7 @@ from quotations.forms import CreateQuotationForm, UpdateQuotationForm, CreateBas
 from quotations.models import Quotation, BasePriceModificator
 from users.permission import EmployeeRequiredMixin
 from notifications.models import Notification
+from notifications.views import CreateNotification
 from transports.models import Transport, TransportStatus
 from users.models import Client
 from icecream import ic
@@ -33,7 +34,11 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
             quotation = quotation_form.save()
             transport = quotation.transport.transport_status.id
             transport_status = TransportStatus.objects.filter(id=transport).first()
-            notifition_client = Notification(user=transport_status.user)
+            transport_status.status = 2
+            transport_status.save()
+            user = transport_status.user
+            ic(quotation)
+            CreateNotification.client_quotation_notification(user=user, quotation=quotation)
             return redirect("quotation-detail", pk=quotation.id)
 
         return redirect('dashboard')
