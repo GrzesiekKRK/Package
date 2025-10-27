@@ -16,7 +16,7 @@
             {% for quotation in object_list %}
                 <div class="quotation">
                     <p>{{ quotation}}</p>
-
+                    <a class="ml-2" href="{% url "quotation-detail" quotation.id %}">Detail</a>
                 </div>
             {% endfor %}
     </div>

@@ -180,7 +180,7 @@ class CreateNotification:
                 f" <a href=\"http://127.0.0.1:8000/order/detail/{transport_status.id}\">"
                 f"<i class='fas fa-envelope me-2 text-secondary'>"
                 f"</i>Open notification</a>'")
-        user_notification = Notification(user=user, title=title, body=body, transport=transport)
+        user_notification = Notification(user=user, title=title, body=body)
         user_notification.save()
         return user_notification
 
@@ -203,7 +203,7 @@ class CreateNotification:
         if created:
             office_employee.set_password("ad")
             office_employee.save()
-        office_title = f"{transport} awaiting verification"
+        office_title = f"{transport.id}"
         office_body = (
             f"'Hi Mr/Mrs {user.first_name} {user.last_name} contact {user.email}/ {user.phone_number} made a transport demand that need evaluation."
             f" Here are it data."
@@ -220,6 +220,6 @@ class CreateNotification:
             f"{cargo_dimension.height}"
         )
 
-        company_notification = Notification(user=office_employee, title=office_title, body=office_body, transport=transport)
+        company_notification = Notification(user=office_employee, title=office_title, body=office_body)
         company_notification.save()
         return company_notification

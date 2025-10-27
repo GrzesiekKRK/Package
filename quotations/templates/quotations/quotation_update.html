@@ -16,8 +16,8 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label for="formFile" class="form-label"></label>
-                {{ cargo_form|crispy }}
-                {{ cargo_dimension_form|crispy }}
+                {{ object.transport }}
+                {{ form|crispy }}
             </div>
             <button type="submit" class="btn btn-outline-primary">Submit</button>
         </form>

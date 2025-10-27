@@ -19,7 +19,6 @@ class Notification(models.Model):
     is_read = models.BooleanField(verbose_name="read", default=False)
     title = models.CharField(max_length=100)
     body = models.TextField()
-    transport = models.ForeignKey(Transport, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"Notification of user {self.user} {self.body}"
