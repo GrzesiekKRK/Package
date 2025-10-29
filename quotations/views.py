@@ -23,6 +23,12 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
         transport_id = int(notification.title)
         transport = Transport.objects.filter(id=transport_id).first()
 
+        quotation_exist = Quotation.objects.filter(transport=transport).first()
+
+        if quotation_exist:
+            context["object"] = quotation_exist
+            return render(request, "quotations/quotations_detail.html", context)
+
         context["form"] = CreateQuotationForm(initial={'transport': transport})
         return render(request, 'quotations/create_quotation.html', context)
 
@@ -30,16 +36,15 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         quotation_form = CreateQuotationForm(request.POST)
         if quotation_form.is_valid():
-
             quotation = quotation_form.save()
-            transport = quotation.transport.transport_status.id
-            transport_status = TransportStatus.objects.filter(id=transport).first()
+            transport_status_id = quotation.transport.transport_status.id
+            transport_status = TransportStatus.objects.filter(id=transport_status_id).first()
             transport_status.status = 2
             transport_status.save()
             user = transport_status.user
-            ic(quotation)
+
             CreateNotification.client_quotation_notification(user=user, quotation=quotation)
-            return redirect("quotation-detail", pk=quotation.id)
+            return redirect("quotations-detail", pk=quotation.id)
 
         return redirect('dashboard')
 
@@ -47,18 +52,18 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
 #TODO wyszukiwanie po id transportu lub wyceny
 class QuotationListView(EmployeeRequiredMixin, ListView):
     model = Quotation
-    template_name = "quotations/quotation_list.html"
+    template_name = "quotations/quotations_list.html"
 
 
 class QuotationDetailView(EmployeeRequiredMixin, DetailView):
     model = Quotation
-    template_name = "quotations/quotation_detail.html"
+    template_name = "quotations/quotations_detail.html"
 
 
 #TODO nadpisać get aby pobrac numer transportu
 class QuotationUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Quotation
-    template_name = "quotations/quotation_update.html"
+    template_name = "quotations/quotations_update.html"
     form_class = UpdateQuotationForm
     success_url = reverse_lazy("quotation-list")
 

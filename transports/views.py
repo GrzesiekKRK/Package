@@ -117,7 +117,7 @@ class CreateTransport(LoginRequiredMixin, CreateView):
                 cargo_dimension = CreateTransport.create_cargo_dimension(cargo_dimension_form, transport)
                 CreateTransport.notifications(transport_status, cargo_dimension, transport, user)
 
-                return redirect("notification")
+                return redirect("notifications")
 
         context = {
             "cargo_form": transport_form,

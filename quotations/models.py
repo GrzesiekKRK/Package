@@ -9,6 +9,7 @@ class BasePriceModificator(models.Model):
     vehicle_type = models.CharField(max_length=30, choices=vehicle_type.TRUCK_TYPE_CHOICES)
     value = models.DecimalField(decimal_places=2, max_digits=6, help_text='Value of modificator for base price tag of solo-truck transport.')
 
+
 #TODO js sricpt do przeliczania
 #TODO Updateview do wybierania pojazdu i po update przeliczania ceny
 class Quotation(models.Model):
@@ -24,7 +25,7 @@ class Quotation(models.Model):
     total_price = models.DecimalField(help_text='Total price for this transport with profit', decimal_places=2, max_digits=6, default=1100)
 
     def __str__(self) -> str:
-        return f"Quotation for transport number {self.transport.id} with total price: {self.total_price}"
+        return f"Quotation for transport  #{self.transport.id} with total price: {self.total_price}"
 
     def driver_cost(self):
         """Calculate driver cost by multiplying driver kilometer rate by total distance covered.Rounded to 2 decimal places."""

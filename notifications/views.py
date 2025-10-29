@@ -14,7 +14,7 @@ from icecream import ic
 
 
 class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = "notifications/notifications.html"
+    template_name = "notifications/notifications-list.html"
 
     def get_context_data(self, **kwargs) -> dict[str:Any]:
         """
