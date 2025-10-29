@@ -1,8 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import UpdateView, DetailView, DeleteView, TemplateView
-from django.urls import reverse_lazy
+from django.views.generic import TemplateView
+
 from icecream import ic
 
 from vehicles.forms import CreateVehicleForm, VehicleDimensionForm
@@ -37,7 +37,6 @@ class VehicleCreateView(LoginRequiredMixin, TemplateView):
 
         return redirect('dashboard')
 
-    # return render(request, "vehicles/create_vehicle.html", context)
 
 
 

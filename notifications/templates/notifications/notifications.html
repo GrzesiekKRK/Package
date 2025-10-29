@@ -23,7 +23,7 @@
                                     <i class="fas fa-envelope me-2 text-secondary"></i> Create Quotation
                                 </a>
                                 {% else%}
-                                <a href="{% url 'notification-detail' notification.id %}" class="text-primary text-decoration-none">
+                                <a href="{% url 'notifications-detail' notification.id %}" class="text-primary text-decoration-none">
                                     <i class="fas fa-envelope me-2 text-secondary"></i> Open Notification
                                 </a>
                                 {% endif %}
@@ -31,7 +31,7 @@
 
                             {% if notification.is_read %}
                                 <p class="text-success">Status: Read</p>
-                                <form action="{% url 'notification-delete' notification.id %}" method="post">
+                                <form action="{% url 'notifications-delete' notification.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-danger rounded-pill px-3">
                                         <i class="fa fa-trash me-2"></i> Delete Notification

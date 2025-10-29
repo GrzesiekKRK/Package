@@ -14,7 +14,7 @@ from icecream import ic
 
 
 class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
-    template_name = "notifications/notification.html"
+    template_name = "notifications/notifications.html"
 
     def get_context_data(self, **kwargs) -> dict[str:Any]:
         """
@@ -48,7 +48,7 @@ class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
 
 class NotificationDetailTemplateView(LoginRequiredMixin, TemplateView):
     model = Notification
-    template_name = "notifications/notification-detail.html"
+    template_name = "notifications/notifications-detail.html"
 
     def get_object(self, queryset=None) -> Notification:
         """
@@ -116,7 +116,7 @@ class NotificationDeleteView(LoginRequiredMixin, DeleteView):
     """Handles the deletion of a notification."""
 
     model = Notification
-    template_name = "notifications/notification_confirm_delete.html"
+    template_name = "notifications/notifications_confirm_delete.html"
     success_url = "/products/"
 
     def get_object(self, queryset=None) -> Notification:
@@ -181,7 +181,7 @@ class CreateNotification:
         user_notification.save()
         return user_notification
 
-    #TODO link od payments
+    #TODO link od payments(url do checkout bezpośrednio z kwotą)
     @staticmethod
     def client_quotation_notification(user: CustomUser, quotation: Quotation) -> Notification:
         """
@@ -197,7 +197,7 @@ class CreateNotification:
         title = f"Quotation"
         body = (f"'Hi {user.first_name} quotation is ready."
                 f"Price is {quotation.total_price} PLN."
-                f" If you accept price confimet by paying with link in notification:"
+                f" If you accept price  pay with this link :"
                 f" <a href=\"http://127.0.0.1:8000/order/detail/{quotation.id}\">"
                 )
         client_notification = Notification(user=user, title=title, body=body)

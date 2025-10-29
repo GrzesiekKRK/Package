@@ -7,15 +7,15 @@ from users.models import CustomUser
 DOMAIN = "http://127.0.0.1:8000/"
 
 
-def stripe_checkout_session(order: Order) -> stripe.checkout:
+def stripe_checkout_session(quotation: Quotation) -> stripe.checkout:
     """
     Creates a Stripe checkout session for processing payments. This session contains
     the items in the order, customer details, and payment configurations, and it is
     used to redirect the user to the Stripe payment page.
 
         Args:
-            order (Order): The order for which the Stripe checkout session is being created.
-                           It contains customer details, products, prices, and shipping information.
+            quotation (Quotation): The quotation for which the Stripe checkout session is being created.
+                           It contains customer price and shipping information.
 
         Returns:
         stripe.checkout.Session: A Stripe checkout session object that will be used

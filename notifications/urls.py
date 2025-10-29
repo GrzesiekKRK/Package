@@ -7,15 +7,15 @@ from notifications.views import (
 )
 
 urlpatterns = [
-    path("", NotificationListTemplateView.as_view(), name="notification"),
+    path("", NotificationListTemplateView.as_view(), name="notifications"),
     path(
         "<int:pk>/detail",
         NotificationDetailTemplateView.as_view(),
-        name="notification-detail",
+        name="notifications-detail",
     ),
     path(
         "<int:pk>/delete",
         NotificationDeleteView.as_view(),
-        name="notification-delete",
+        name="notifications-delete",
     ),
 ]
