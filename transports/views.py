@@ -126,8 +126,8 @@ class CreateTransport(LoginRequiredMixin, CreateView):
 
         return render(request, "transport/create_transport.html", context)
 
-
-class TransportStatusListView(LoginRequiredMixin, ListView):
+#TODO Spytać o query przez __user poniżej
+class TransportListView(LoginRequiredMixin, ListView):
     """List all User Transports"""
     model = Transport
     template_name = "transport/transport_list.html"
@@ -142,8 +142,12 @@ class TransportStatusListView(LoginRequiredMixin, ListView):
             dict[str, Any]: A dictionary with data that will be used in the template.
         """
         context = super().get_context_data(**kwargs)
-        status = TransportStatus.objects.filter(user=self.request.user)
-        context['transports'] = status
+        # status = TransportStatus.objects.select_related('user').filter(user=self.request.user)
+        # status_one = status[0]
+        # transports = Transport.objects.select_related('transport_status', 'transport_status__user').filter(transport_status=status_one)
+        transports = Transport.objects.select_related('transport_status', 'transport_status__user').filter(transport_status__user=self.request.user)
+
+        context['transports'] = transports
 
         return context
 
@@ -152,17 +156,4 @@ class TransportDetailView(LoginRequiredMixin, DetailView):
     model = Transport
     template_name = "transport/transport_detail.html"
 
-    def get_context_data(self, **kwargs) -> dict[str, Any]:
-        """
-        Method that generates the context data to be passed to the template.
 
-        **kwargs: Additional arguments passed to the method (e.g., URL variables).
-
-        Returns:
-            dict[str, Any]: A dictionary with data that will be used in the template.
-        """
-        context = super().get_context_data(**kwargs)
-        status = Transport.objects.filter(user=self.request.user).select_related('transport_status', 'driver', 'dimensions')
-        context['transports'] = status
-
-        return context

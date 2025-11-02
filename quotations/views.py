@@ -38,7 +38,7 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
         if quotation_form.is_valid():
             quotation = quotation_form.save()
             transport_status_id = quotation.transport.transport_status.id
-            transport_status = TransportStatus.objects.filter(id=transport_status_id).first()
+            transport_status = TransportStatus.objects.select_realated('user').filter(id=transport_status_id).first()
             transport_status.status = 2
             transport_status.save()
             user = transport_status.user

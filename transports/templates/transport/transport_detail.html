@@ -15,55 +15,42 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0">Cargo #{{ cargo.id }}</h3>
+                        <h3 class="mb-0">Transport #{{ object.id }}</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- Basic Information -->
                             <div class="col-md-6">
-                                <div class="product-details">
-                                    <h4 class="mb-3 text-primary">Basic Information</h4>
 
-                                    <div class="detail-item mb-3">
-                                        <strong>Cargo ID:</strong>
-                                        <span class="ms-2">{{ cargo.id }}</span>
+                                        <strong>Collection address:</strong>
+                                        <span class="ms-2">{{ object.collection_address }}</span>
                                     </div>
-
+                                    <p></p>
                                     <div class="detail-item mb-3">
-                                        <strong>Name:</strong>
-                                        <span class="ms-2">{{ cargo.name }}</span>
+                                        <strong>Delivery address:</strong>
+                                        <span class="ms-2">{{ object.delivery_address }}</span>
                                     </div>
-
-                                    <div class="detail-item mb-3">
-                                        <strong>Description:</strong>
-                                        <p class="mt-2">{{ cargo.description }}</p>
-                                    </div>
-
-                                    <div class="detail-item mb-3">
-                                        <strong>Total Distance:</strong>
-                                        <span class="ms-2">{{ cargo.total_distance }} km</span>
-                                    </div>
-
+                                    <p></p>
                                     <div class="detail-item mb-3">
                                         <strong>Transport Distance:</strong>
-                                        <span class="ms-2">{{ cargo.transport_distance }} km</span>
+                                        <span class="ms-2">{{ object.transport_distance }} km</span>
                                     </div>
 
                                     <!-- Price Section -->
                                     <div class="d-flex align-items-center mb-4">
                                         {% if cargo.cargo_status == "Completed" %}
                                             <div>
-                                                <h3 class="text-success me-2">${{ cargo.price }}</h3>
+                                                <h3 class="text-success me-2">${{ object.price }}</h3>
                                                 <small class="text-muted">Status: Completed</small>
                                             </div>
                                         {% elif cargo.cargo_status == "In Transit" %}
                                             <div>
-                                                <h3 class="text-warning">${{ cargo.price }}</h3>
+                                                <h3 class="text-warning">${{ object.price }}</h3>
                                                 <small class="text-warning">Status: In Transit</small>
                                             </div>
                                         {% else %}
                                             <div>
-                                                <h3 class="text-primary">${{ cargo.price }}</h3>
+                                                <h3 class="text-primary">${{ object.price }}</h3>
                                                 <small class="text-muted">Status: {{ cargo.cargo_status|default:"New" }}</small>
                                             </div>
                                         {% endif %}
@@ -78,42 +65,26 @@
 
                                     <div class="detail-item mb-3">
                                         <strong>Weight:</strong>
-                                        <span class="ms-2">{{ cargo.weight }} kg</span>
+                                        <span class="ms-2">{{ object.dimensions.weight }} kg</span>
                                     </div>
 
                                     <div class="detail-item mb-3">
                                         <strong>Volume:</strong>
-                                        <span class="ms-2">{{ cargo.volume }} m³</span>
+                                        <span class="ms-2">{{ object.dimensions.volume }} m³</span>
                                     </div>
 
                                     <div class="detail-item mb-3">
-                                        <strong>Origin:</strong>
-                                        <span class="ms-2">{{ cargo.origin }}</span>
+                                        <strong>Creation Date:</strong>
+                                        <span class="ms-2">{{ object.transport_status.created_at|date:"d.m.Y H:i" }}</span>
                                     </div>
 
-                                    <div class="detail-item mb-3">
-                                        <strong>Destination:</strong>
-                                        <span class="ms-2">{{ cargo.destination }}</span>
-                                    </div>
 
-                                    <div class="detail-item mb-3">
-                                        <strong>Created Date:</strong>
-                                        <span class="ms-2">{{ cargo.created_at|date:"d.m.Y H:i" }}</span>
-                                    </div>
-
-                                    <div class="detail-item mb-3">
-                                        <strong>Delivery Date:</strong>
-                                        <span class="ms-2">{{ cargo.delivery_date|date:"d.m.Y" }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Action Buttons -->
                         <div class="row mt-4">
                             <div class="col-12">
                                 <div class="d-flex gap-2">
-                                    <a href="{% url 'cargo-list' user.id %}" class="btn btn-secondary">
+                                    <a href="{% url "transports-list" user.id %}" class="btn btn-secondary">
                                         <i class="fa fa-arrow-left me-2"></i>Back to List
                                     </a>
 

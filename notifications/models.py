@@ -19,6 +19,7 @@ class Notification(models.Model):
     is_read = models.BooleanField(verbose_name="read", default=False)
     title = models.CharField(max_length=100)
     body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return f"Notification of user {self.user} {self.body}"

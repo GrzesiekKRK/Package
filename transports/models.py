@@ -31,7 +31,7 @@ class Transport(models.Model):
         Working in conjunction with OrderDimension for better performance
     """
     driver = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
-    transport_status = models.ForeignKey(TransportStatus, on_delete=models.CASCADE)
+    transport_status = models.ForeignKey(TransportStatus, on_delete=models.CASCADE, related_name='transport')
     total_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Distance", default=1)
     total_duration = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total Duration", default=1)
     transport_distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Transport Distance", default=1)

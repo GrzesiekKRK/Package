@@ -176,7 +176,7 @@ class CreateNotification:
         Returns:
             Notification: The created notification instance sent to the buyer.
         """
-        title = f"{transport_status.id} awaiting verification"
+        title = f"Question {transport_status.id} is awaiting verification"
         body = (f"'Hi your transport demand will be check and evaluation."
                 f" Once done will send notification with price tag."
                 )

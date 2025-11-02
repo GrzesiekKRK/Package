@@ -33,7 +33,6 @@ class VehicleCreateView(LoginRequiredMixin, TemplateView):
                 vehicle_dimension = vehicle_dimension_form.save(commit=False)
                 vehicle_dimension.vehicle = vehicle
                 vehicle_dimension.save()
-                ic(f'Vehicle saved: {vehicle}')
 
         return redirect('dashboard')
 
