@@ -12,7 +12,7 @@ from users.models import CustomUser, Employee, Department
 from quotations.models import Quotation
 from icecream import ic
 
-
+#TODO prefecht
 class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
     template_name = "notifications/notifications-list.html"
 
@@ -31,9 +31,11 @@ class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
                              Contains the list of notifications under the key 'notifications'.
         """
         user = self.request.user.id
-        notification = Notification.objects.filter(user=user).order_by(
+        notification = Notification.objects.select_related('user').filter(user=user).order_by(
             "is_read"
         )
+        quotations_query = Quotation.objects.select_related('transport', 'vehicle').all().order_by("id")
+
         paginator = Paginator(notification, 12)
         page_number = self.request.GET.get("page")
         try:
@@ -43,6 +45,7 @@ class NotificationListTemplateView(LoginRequiredMixin, TemplateView):
         page_obj = paginator.get_page(page_number)
         context = super().get_context_data(**kwargs)
         context["notifications"] = page_obj
+        context["quotations"] = quotations_query
         return context
 
 

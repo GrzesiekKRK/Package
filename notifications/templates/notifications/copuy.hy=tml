@@ -1,0 +1,10 @@
+{%  for key, value in quotations.items %}
+                                    {% if notification.transport.id == key%}
+                                        <button class="btn border-secondary rounded-pill px-4 py-2 text-primary text-uppercase mb-2">
+                                            <a href="{% url 'quotation-detail' value %}" class="text-primary text-decoration-none">
+                                                <i class="fas fa-envelope me-2 text-secondary"></i> Quotation Detail
+                                            </a>
+                                        </button>
+
+                                    {% endif %}
+                                {% endfor %}

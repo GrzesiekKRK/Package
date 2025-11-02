@@ -18,12 +18,12 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        notification = Notification.objects.filter(id=kwargs['pk']).first()
+        notification = Notification.objects.select_related('user').filter(id=kwargs['pk']).first()
 
         transport_id = int(notification.title)
-        transport = Transport.objects.filter(id=transport_id).first()
+        transport = Transport.objects.select_related('driver', 'transport_status', 'dimensions').filter(id=transport_id).first()
 
-        quotation_exist = Quotation.objects.filter(transport=transport).first()
+        quotation_exist = Quotation.objects.select_related('transport', 'vehicle').filter(transport=transport).first()
 
         if quotation_exist:
             context["object"] = quotation_exist
@@ -44,7 +44,8 @@ class CreateQuotationView(EmployeeRequiredMixin, TemplateView):
             user = transport_status.user
 
             CreateNotification.client_quotation_notification(user=user, quotation=quotation)
-            return redirect("quotations-detail", pk=quotation.id)
+            context = {"object": quotation}
+            return render(request, 'quotations/quotations_detail.html', context)
 
         return redirect('dashboard')
 
