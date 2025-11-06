@@ -5,7 +5,7 @@ from vehicles.models import Vehicle
 from vehicles import consts as vehicle_type
 
 
-class BasePriceModificator(models.Model):
+class VehiclePriceModificator(models.Model):
     vehicle_type = models.CharField(max_length=30, choices=vehicle_type.TRUCK_TYPE_CHOICES)
     value = models.DecimalField(decimal_places=2, max_digits=6, help_text='Value of modificator for base price tag of solo-truck transport.')
 
@@ -49,7 +49,7 @@ class Quotation(models.Model):
         """Add voyage cost and minimal profit. Multiply depending on vehicle typ. Rounded to 2 decimal places."""
         voyage_cost = self.voyage_cost()
         truck_type = self.vehicle.type
-        modificator = BasePriceModificator.objects.get(vehicle_type=truck_type)
+        modificator = VehiclePriceModificator.objects.get(vehicle_type=truck_type)
         price = (voyage_cost + self.minimal_profit) * modificator.value
         total_price = round(price, 2)
         return total_price

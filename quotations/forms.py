@@ -1,5 +1,5 @@
 from django import forms
-from quotations.models import Quotation, BasePriceModificator
+from quotations.models import Quotation, VehiclePriceModificator
 
 
 class CreateQuotationForm(forms.ModelForm):
@@ -34,7 +34,7 @@ class UpdateQuotationForm(forms.ModelForm):
 
 class CreateBasePriceModificatorForm(forms.ModelForm):
     class Meta:
-        model = BasePriceModificator
+        model = VehiclePriceModificator
         fields = [
             'vehicle_type',
             'value'
