@@ -7,7 +7,7 @@ from icecream import ic
 
 from vehicles.forms import CreateVehicleForm, VehicleDimensionForm
 
-
+#TODO VehicleListView
 class VehicleCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'vehicles/create_vehicle.html'
 

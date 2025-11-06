@@ -1,8 +1,8 @@
-from django.views.generic import UpdateView, DetailView, ListView, TemplateView
+from django.views.generic import UpdateView, DetailView, ListView, TemplateView, CreateView
 from typing import Any
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from quotations.forms import CreateQuotationForm, UpdateQuotationForm, VehiclePriceModificator
+from quotations.forms import CreateQuotationForm, UpdateQuotationForm, VehiclePriceModificatorForm
 from quotations.models import Quotation, VehiclePriceModificator
 from users.permission import EmployeeRequiredMixin
 from notifications.models import Notification
@@ -75,5 +75,23 @@ class QuotationUpdateView(EmployeeRequiredMixin, UpdateView):
         return super().get_context_data(**kwargs)
 
 
+class VehiclePriceModificatorCreateView(EmployeeRequiredMixin, CreateView):
+    model = VehiclePriceModificator
+    form_class = VehiclePriceModificatorForm
+
+
 class VehiclePriceModificatorListView(EmployeeRequiredMixin, ListView):
     model = VehiclePriceModificator
+    template_name = "quotations/vehicle_price_modificator_list.html"
+
+
+class VehiclePriceModificatorDetailView(EmployeeRequiredMixin, DetailView):
+    model = VehiclePriceModificator
+    template_name = "quotations/vehicle_price_modificator_detail.html"
+
+
+class VehiclePriceModificatorUpdateView(EmployeeRequiredMixin, UpdateView):
+    model = VehiclePriceModificator
+    template_name = "quotations/vehicle_price_modificator_update.html"
+    form_class = VehiclePriceModificatorForm
+    success_url = reverse_lazy("price-modificator-list")

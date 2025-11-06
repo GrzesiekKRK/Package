@@ -3,11 +3,15 @@ from decimal import Decimal
 from transports.models import Transport
 from vehicles.models import Vehicle
 from vehicles import consts as vehicle_type
+from icecream import ic
 
 
 class VehiclePriceModificator(models.Model):
     vehicle_type = models.CharField(max_length=30, choices=vehicle_type.TRUCK_TYPE_CHOICES)
     value = models.DecimalField(decimal_places=2, max_digits=6, help_text='Value of modificator for base price tag of solo-truck transport.')
+
+    def __str__(self) -> str:
+        return f"Vehicle Price Modificator for {self.vehicle_type} with value modificator of : {self.value}"
 
 
 #TODO js sricpt do przeliczania

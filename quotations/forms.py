@@ -32,7 +32,7 @@ class UpdateQuotationForm(forms.ModelForm):
                 ]
 
 
-class CreateBasePriceModificatorForm(forms.ModelForm):
+class VehiclePriceModificatorForm(forms.ModelForm):
     class Meta:
         model = VehiclePriceModificator
         fields = [
