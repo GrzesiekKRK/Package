@@ -14,12 +14,13 @@
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
             {% csrf_token %}
-            {% for object in object_list %}
                 <div class="quotation">
                     <p>{{ object }}</p>
-                    <a class="ml-2" href="{% url "vehicle-detail" object.id %}">Detail</a>
+                    <a class="ml-2" href="{% url "vehicle-update" object.id %}">Update</a>
                 </div>
-            {% endfor %}
+                <p></p>
+                 <a class="nl-2" href="{% url 'vehicle-delete' object.id %}">Remove vehicle with plate number: {{ object.plates}} from fleet</a>
+
     </div>
         </div>
     </div>

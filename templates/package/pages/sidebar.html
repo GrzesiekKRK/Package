@@ -59,12 +59,7 @@
                 <span class="nav-link-text ms-1">Profile</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "employee-update-profile" request.user.id %}>
-                  <i class="material-symbols-rounded opacity-5">edit</i>
-                <span class="nav-link-text ms-1">Update Profile</span>
-              </a>
-            </li>
+
               <li class="nav-item">
               <a class="nav-link text-dark" href={% url "quotation-list" %}>
                 <i class="material-symbols-rounded opacity-5">person</i>
@@ -78,12 +73,18 @@
               </a>
             </li>
               <li class="nav-item">
-              <a class="nav-link text-dark" href={% url "create_vehicle"  %}>
+              <a class="nav-link text-dark" href={% url "vehicle-list"  %}>
+                  <i class="material-symbols-rounded opacity-5">edit</i>
+                <span class="nav-link-text ms-1">Vehicle fleet</span>
+              </a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link text-dark" href={% url "create-vehicle"  %}>
                   <i class="material-symbols-rounded opacity-5">edit</i>
                 <span class="nav-link-text ms-1">Add vehicle to fleet</span>
               </a>
             </li>
-            <!-- Dodaj tutaj inne linki specyficzne dla pracowników -->
+
           {% else %}
             <!-- Linki dla zwykłych użytkowników (klientów) -->
             <li class="nav-item">
