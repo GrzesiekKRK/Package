@@ -1,14 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
-
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView
+from users.permission import EmployeeRequiredMixin
 from icecream import ic
 
 from vehicles.forms import CreateVehicleForm, VehicleDimensionForm
+from vehicles.models import Vehicle
+
 
 #TODO VehicleListView
-class VehicleCreateView(LoginRequiredMixin, TemplateView):
+class VehicleCreateView(EmployeeRequiredMixin, TemplateView):
     template_name = 'vehicles/create_vehicle.html'
 
     def get_context_data(self, **kwargs):
@@ -36,6 +38,7 @@ class VehicleCreateView(LoginRequiredMixin, TemplateView):
 
         return redirect('dashboard')
 
-
-
+class VehicleListView(EmployeeRequiredMixin, ListView):
+    model = Vehicle
+    template_name = "vehicles/vehicle_list.html"
 
